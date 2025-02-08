@@ -1,0 +1,150 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+header.head {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+#toolbar,
+#menu-dropdown {
+    display: flex;
+    justify-content: space-around;
+    background-color: #333;
+    padding: 10px 0;
+}
+
+#toolbar div,
+#menu-dropdown div {
+    color: white;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+.container {
+    padding: 20px;
+}
+
+.calendar-container {
+    text-align: center;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.calendar-day,
+.calendar-header {
+    background-color: #f9f9f9;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.calendar-day.reserved {
+    background-color: #c8e6c9; /* Grün für reservierte Tage */
+}
+
+.calendar-day:hover {
+    background-color: #e0e0e0;
+}
+
+.calendar-header {
+    font-weight: bold;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.input-container {
+    margin: 20px 0;
+}
+
+.input-container select,
+.input-container input,
+.input-container button {
+    padding: 10px;
+    margin: 5px 0;
+    width: 100%;
+    max-width: 300px;
+    display: block;
+}
+
+.reservation-btn {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background-color: #f44336;
+    color: white;
+    cursor: pointer;
+}
+
+.input-container button:hover {
+    background-color: #45a049;
+}
+
+.cancel-btn:hover {
+    background-color: #e53935;
+}
+
+.reservation-list {
+    margin-top: 30px;
+}
+
+.reservation-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.reservation-list li {
+    background-color: #f1f1f1;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reservation-list button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.reservation-list button:hover {
+    background-color: #45a049;
+}
+
+/* Tooltip-Style für Hover-Info */
+.tooltip {
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    visibility: hidden;
+}
+
+.calendar-day:hover .tooltip {
+    visibility: visible;
+}

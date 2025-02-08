@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platzreservierung</title>
+    <link rel="stylesheet" href="../css/platzreservierung.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="shortcut icon" href="../img/faivicon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+
+<body>
+
+  <!--  <header class="head">
+        <h1>Platzreservierung</h1>
+    </header>
+
+    <div id="toolbar">
+        <div id="Home"><span class="material-symbols-outlined">home</span><span>Home</span></div>
+        <div id="platzreservierung"><span class="material-symbols-outlined">event_seat</span><span>Platz</span></div>
+    </div> -->
+
+    <div class="container">
+        <div class="calendar-container">
+            <h3>Kalenderansicht</h3>
+            <div>
+                <button id="prev-month" onclick="changeMonth(-1)">◀</button>
+                <span id="current-month"></span>
+                <button id="next-month" onclick="changeMonth(1)">▶</button>
+            </div>
+            <div class="calendar" id="calendar"></div>
+        </div>
+
+        <!-- Eingabebereich für Reservierungen -->
+        <div class="input-container">
+            <h3>Platz reservieren</h3>
+            <label for="platz">Wählen Sie den Platz:</label>
+            <select id="platz">
+                <option value="Platz 1">Platz 1</option>
+                <option value="Platz 2">Platz 2</option>
+                <option value="Platz 3">Platz 3</option>
+                <option value="Platz 4">Platz 4</option>
+                <option value="Platz 5">Platz 5</option>
+                <option value="Platz 6">Platz 6</option>
+            </select>
+
+            <label for="time">Wählen Sie die Uhrzeit:</label>
+            <select id="time">
+                <option value="08:00">08:00</option>
+                <option value="09:00">09:00</option>
+                <option value="10:00">10:00</option>
+                <option value="11:00">11:00</option>
+                <option value="12:00">12:00</option>
+                <option value="13:00">13:00</option>
+                <option value="14:00">14:00</option>
+                <option value="15:00">15:00</option>
+                <option value="16:00">16:00</option>
+                <option value="17:00">17:00</option>
+                <option value="18:00">18:00</option>
+                <option value="19:00">19:00</option>
+                <option value="20:00">20:00</option>
+            </select>
+
+            <label for="date">Wählen Sie das Datum:</label>
+            <input type="date" id="date" name="date">
+
+            <label for="name">Name der reservierenden Person:</label>
+            <input type="text" id="name" placeholder="Ihr Name">
+
+            <button class="reservation-btn" onclick="addReservation()">Reservieren</button>
+        </div>
+
+        <!-- Reservierungen unterhalb der Eingabefelder -->
+        <div class="reservation-list">
+            <h3>Reservierungen zur Auswahl</h3>
+            <ul id="reservation-list-ul"></ul>
+        </div>
+    </div>
+
+    <script src="..\js\platzreservierung.js"></script>
+
+</body>
+
+</html>
