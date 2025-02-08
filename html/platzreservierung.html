@@ -13,14 +13,30 @@
 
 <body>
 
-  <!--  <header class="head">
-        <h1>Platzreservierung</h1>
+   <header class="head">
+        <h1 style="color: rgb(255, 255, 255);">Platzreservierung</h1>
     </header>
 
-    <div id="toolbar">
+    <div id="menu-dropdown" class="hidden">
+        <div id="Admin"><span class="material-symbols-outlined">admin_panel_settings</span><span>Admin</span></div>
+        <div id="Spielplan"><span class="material-symbols-outlined">calendar_month</span><span>Spielplan</span></div>
+        <div id="Tunire"><span class="material-symbols-outlined">emoji_events</span><span>Turniere</span></div>
         <div id="Home"><span class="material-symbols-outlined">home</span><span>Home</span></div>
+        <div id="Chat"><span class="material-symbols-outlined">chat</span><span>Chat</span></div>
         <div id="platzreservierung"><span class="material-symbols-outlined">event_seat</span><span>Platz</span></div>
-    </div> -->
+        <div id="Sonstiges"><span class="material-symbols-outlined">more_horiz</span><span>Sonstiges</span></div>
+    </div>
+
+    <!-- Normale Toolbar -->
+    <div id="toolbar">
+        <div id="Admin"><span class="material-symbols-outlined">admin_panel_settings</span><span>Admin</span></div>
+        <div id="Spielplan"><span class="material-symbols-outlined">calendar_month</span><span>Spielplan</span></div>
+        <div id="Tunire"><span class="material-symbols-outlined">emoji_events</span><span>Turniere</span></div>
+        <div id="Home"><span class="material-symbols-outlined">home</span><span>Home</span></div>
+        <div id="Chat"><span class="material-symbols-outlined">chat</span><span>Chat</span></div>
+        <div id="platzreservierung"><span class="material-symbols-outlined">event_seat</span><span>Platz</span></div>
+        <div id="Sonstiges"><span class="material-symbols-outlined">more_horiz</span><span>Sonstiges</span></div>
+    </div>
 
     <div class="container">
         <div class="calendar-container">
@@ -74,9 +90,10 @@
 
         <!-- Reservierungen unterhalb der Eingabefelder -->
         <div class="reservation-list">
-            <h3>Reservierungen zur Auswahl</h3>
+            <h3>Deine Reservierungen            </h3>
             <ul id="reservation-list-ul"></ul>
         </div>
+        <br><br><br><br><br>
     </div>
 
     <script src="..\js\platzreservierung.js"></script>

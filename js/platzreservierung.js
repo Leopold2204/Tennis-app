@@ -3,6 +3,19 @@ let selectedDate = null;
 let reservations = [];
 let reservationList = [];
 
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'ö') {
+        openDateMenu();
+    }
+});
+
+function openDateMenu() {
+    // Hier das Popup oder Menü für die Datumsauswahl anzeigen
+    const menu = document.getElementById('date-selection-menu');
+    menu.style.display = 'block'; // Das Menü sichtbar machen
+}
+
+
 // Initialisiert den Kalender
 function loadCalendar() {
     const monthName = currentDate.toLocaleString('de-DE', { month: 'long', year: 'numeric' });
@@ -15,7 +28,6 @@ function loadCalendar() {
     const calendar = document.getElementById('calendar');
     calendar.innerHTML = '';
 
-    // Kalenderkopf (Wochentage)
     const weekdays = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
     weekdays.forEach(day => {
         const headerCell = document.createElement('div');
@@ -24,48 +36,36 @@ function loadCalendar() {
         calendar.appendChild(headerCell);
     });
 
-    // Leerfelder für die Tage vor dem 1. Tag des Monats
+    // Leere Zellen für den Anfang des Monats
     for (let i = 0; i < firstDayIndex; i++) {
         const emptyCell = document.createElement('div');
         emptyCell.className = 'calendar-day';
         calendar.appendChild(emptyCell);
     }
 
-    // Alle Tage im Monat anzeigen
+    // Erstelle die Tageszellen
     for (let day = 1; day <= daysInMonth; day++) {
         const dayCell = document.createElement('div');
         dayCell.className = 'calendar-day';
         dayCell.textContent = day;
 
-        // Tooltip-Container
-        const tooltip = document.createElement('div');
-        tooltip.className = 'tooltip';
-        dayCell.appendChild(tooltip);
-
-        // Check, ob Reservierungen für diesen Tag existieren
-        let reservedText = '';
-        reservations.forEach(reservation => {
+        // Berechnete Farbe basierend auf der Anzahl der Reservierungen
+        const reservedCount = reservations.filter(reservation => {
             const resDate = new Date(reservation.date);
-            if (resDate.getDate() === day && resDate.getMonth() === currentDate.getMonth()) {
-                dayCell.classList.add('reserved');
-                reservedText += `🟢 ${reservation.name} - ${reservation.platz} um ${reservation.time}\n`;
-            }
-        });
+            return resDate.getDate() === day && resDate.getMonth() === currentDate.getMonth();
+        }).length;
 
-        if (reservedText) {
-            tooltip.textContent = reservedText.trim();
+        if (reservedCount > 0) {
+            const greenShade = Math.min(255, reservedCount * 40); // Je mehr Reservierungen, desto dunkler
+            dayCell.style.backgroundColor = `rgb(0, ${255 - greenShade}, 0)`;
         }
 
-        // Tooltip-Anzeige bei Hover und Klick
-        dayCell.addEventListener('mouseover', () => {
-            if (reservedText) tooltip.style.visibility = 'visible';
-        });
-        dayCell.addEventListener('mouseout', () => {
-            tooltip.style.visibility = 'hidden';
-        });
-
-        // Für mobile Geräte (Tooltip beim Klicken anzeigen)
+        // Event für das Anzeigen der Reservierungen
         dayCell.addEventListener('click', () => {
+            const reservedText = reservations.filter(reservation => {
+                const resDate = new Date(reservation.date);
+                return resDate.getDate() === day && resDate.getMonth() === currentDate.getMonth();
+            }).map(reservation => `${reservation.name} - ${reservation.platz} um ${reservation.time}`).join('\n');
             if (reservedText) {
                 alert(`Reservierungen für den ${day}.${currentDate.getMonth() + 1}.${currentDate.getFullYear()}:\n\n${reservedText}`);
             }
@@ -75,12 +75,10 @@ function loadCalendar() {
     }
 }
 
-
 function selectDate(date) {
     selectedDate = new Date(date);
     document.getElementById('date').value = selectedDate.toISOString().split('T')[0]; // Datumsfeld aktualisieren
 }
-
 
 // Reservierung zur Liste hinzufügen
 function addReservation() {
@@ -101,6 +99,28 @@ function addReservation() {
 
     const selectedDate = new Date(dateInput); // Konvertiere den String in ein Date-Objekt
 
+    // Funktion zum Blockieren von Zeiträumen
+function blockTimeRange(startDate, endDate) {
+    const calendar = document.getElementById('calendar');
+    const dayCells = calendar.querySelectorAll('.calendar-day');
+
+    dayCells.forEach(dayCell => {
+        const day = parseInt(dayCell.textContent);
+        const currentDate = new Date();
+        const dayDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+
+        if (dayDate >= startDate && dayDate <= endDate) {
+            dayCell.style.backgroundColor = 'red'; // Rot für blockierte Tage
+        }
+    });
+}
+
+// Beispiel für die Anwendung
+const startDate = new Date('2025-02-08'); // Startdatum
+const endDate = new Date('2025-02-10'); // Enddatum
+blockTimeRange(startDate, endDate);
+
+
     const reservation = { date: selectedDate, platz, time, name };
     reservationList.push(reservation);
     updateReservationList();
@@ -116,9 +136,8 @@ function updateReservationList() {
         listItem.textContent = `${reservation.date.toLocaleDateString()} - ${reservation.platz} um ${reservation.time} (Name: ${reservation.name})`;
 
         const addButton = document.createElement('button');
-        addButton.textContent = 'Zum Kalender hinzufügen';
-        addButton.onclick = () => downloadICS(reservation);
-        addToCalendar(index);
+        addButton.textContent = 'Kalender';
+        addButton.onclick = () => addToCalendar(index);
 
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Löschen';
@@ -128,35 +147,9 @@ function updateReservationList() {
         };
         listItem.appendChild(deleteButton);
 
-
         listItem.appendChild(addButton);
         reservationListUl.appendChild(listItem);
     });
-}
-function downloadICS(reservation) {
-    const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-BEGIN:VEVENT
-DTSTART:${formatICSDate(reservation.date, reservation.time)}
-SUMMARY:Reservierung - ${reservation.name}
-DESCRIPTION:Platz: ${reservation.platz}, Zeit: ${reservation.time}
-END:VEVENT
-END:VCALENDAR`;
-
-    const blob = new Blob([icsContent], { type: 'text/calendar' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `Reservierung_${reservation.date.toISOString().split('T')[0]}.ics`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
-function formatICSDate(date, time) {
-    const [hours, minutes] = time.split(':');
-    const eventDate = new Date(date);
-    eventDate.setHours(hours, minutes, 0);
-    return eventDate.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
 }
 
 // Reservierung zum Kalender hinzufügen
@@ -167,6 +160,8 @@ function addToCalendar(index) {
     for (let cell of dayCell) {
         if (parseInt(cell.textContent) === reservation.date.getDate()) {
             cell.classList.add('reserved');
+            const reservationText = cell.querySelector('.reservation-text');
+            reservationText.textContent = `🟢 ${reservation.name} - ${reservation.platz} um ${reservation.time}`;
             reservations.push(reservation);
             reservationList.splice(index, 1);
             updateReservationList();

@@ -1,150 +1,262 @@
+/* Allgemeine Layout-Verbesserungen */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    background-color: #f5f5f5; /* Helles Grau für den Hintergrund */
+    padding-top: 80px; /* Platz für den fixierten Header */
+}
+
+h1 {
+    font-size: 36px;
     margin: 0;
-    padding: 0;
+    padding: 20px 0;
+    font-weight: 700;
+    color: #388e3c; /* Grüner Titel */
 }
 
-header.head {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 20px;
-}
-
-#toolbar,
-#menu-dropdown {
-    display: flex;
-    justify-content: space-around;
-    background-color: #333;
-    padding: 10px 0;
-}
-
-#toolbar div,
-#menu-dropdown div {
-    color: white;
-    cursor: pointer;
-}
-
-.hidden {
-    display: none;
-}
-
+/* Container für den Kalender und Eingabebereich */
 .container {
+    margin-top: 100px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Kalender-Container */
+.calendar-container {
+    margin-top: 50px;
+    width: 60%;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
 
-.calendar-container {
-    text-align: center;
-}
-
+/* Kalender-Design */
 .calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 10px;
-    margin-top: 20px;
+    padding-top: 20px;
 }
 
-.calendar-day,
 .calendar-header {
-    background-color: #f9f9f9;
-    padding: 20px;
+    font-weight: bold;
     text-align: center;
+    font-size: 14px;
+    color: #388e3c;
+}
+
+.calendar-day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
     cursor: pointer;
     position: relative;
 }
 
 .calendar-day.reserved {
-    background-color: #c8e6c9; /* Grün für reservierte Tage */
-}
-
-.calendar-day:hover {
-    background-color: #e0e0e0;
-}
-
-.calendar-header {
+    background-color: #e0f7fa; /* Heller Türkis für reservierte Tage */
     font-weight: bold;
-    background-color: #4CAF50;
-    color: white;
 }
 
-.input-container {
-    margin: 20px 0;
+.reservation-text {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    font-size: 12px;
+    color: #388e3c;
+    white-space: nowrap;
+    font-weight: normal;
 }
 
-.input-container select,
-.input-container input,
-.input-container button {
-    padding: 10px;
-    margin: 5px 0;
+input, select {
     width: 100%;
-    max-width: 300px;
-    display: block;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+input[type="date"] {
+    cursor: pointer;
+}
+
+input[type="text"]:focus, select:focus {
+    border-color: #388e3c;
+    outline: none;
+    box-shadow: 0 0 5px rgba(56, 142, 60, 0.5);
+}
+
+/* Eingabebereich für Reservierungen */
+.input-container {
+    margin-top: 50px;
+    width: 35%;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
 .reservation-btn {
-    background-color: #4CAF50;
+    width: 100%;
+    background-color: #388e3c;
     color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    border: none;
+    transition: background 0.3s ease;
 }
 
-.cancel-btn {
-    background-color: #f44336;
-    color: white;
-    cursor: pointer;
+.reservation-btn:hover {
+    background-color: #66bb6a;
 }
 
-.input-container button:hover {
-    background-color: #45a049;
-}
-
-.cancel-btn:hover {
-    background-color: #e53935;
-}
-
+/* Reservierungs-Liste */
 .reservation-list {
     margin-top: 30px;
 }
 
-.reservation-list ul {
-    list-style-type: none;
+.reservation-list h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #388e3c;
+}
+
+#reservation-list-ul {
+    list-style: none;
     padding: 0;
 }
 
-.reservation-list li {
-    background-color: #f1f1f1;
-    padding: 10px;
-    margin-bottom: 10px;
+#reservation-list-ul li {
+    background-color: #f9f9f9;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.reservation-list button {
-    background-color: #4CAF50;
+#reservation-list-ul button {
+    background-color: #388e3c;
     color: white;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-.reservation-list button:hover {
-    background-color: #45a049;
-}
-
-/* Tooltip-Style für Hover-Info */
-.tooltip {
-    position: absolute;
-    top: -30px;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    text-align: center;
-    padding: 5px;
+    border: none;
+    padding: 8px 12px;
     border-radius: 5px;
-    visibility: hidden;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
 }
 
-.calendar-day:hover .tooltip {
+#reservation-list-ul button:hover {
+    background-color: #66bb6a;
+}
+
+/* Tooltip für Reservierungstext */
+.calendar-day:hover .reservation-text {
     visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* Responsives Design */
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .calendar-container {
+        width: 90%;
+        margin-bottom: 20px;
+    }
+
+    .input-container {
+        width: 90%;
+    }
+}
+
+/* Für sehr kleine Bildschirme */
+@media (max-width: 600px) {
+    .calendar-container {
+        width: 100%;
+    }
+
+    .input-container {
+        width: 100%;
+    }
+}
+
+/* Reservierungen unterhalb der Eingabefelder */
+/* Reservierungen unterhalb der Eingabefelder */
+/* Reservierungen unterhalb der Eingabefelder */
+.reservation-list {
+    margin-top: 40px; /* Hier erhöhen wir den Abstand nach oben */
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 250px;
+    margin: 50px auto 0px; /* Auch hier den Abstand nach oben erhöhen */
+    min-height: 150px;
+    
+}
+
+
+
+.reservation-list h3 {
+    font-size: 14px; /* Kleinere Schriftgröße */
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #388e3c;
+}
+
+/* Liste der Reservierungen */
+#reservation-list-ul {
+    list-style: none;
+    padding: 0;
+    max-height: 120px; /* Maximale Höhe für die Liste der Reservierungen */
+    overflow-y: auto; /* Ermöglicht das Scrollen, wenn die Liste zu lang wird */
+}
+
+#reservation-list-ul li {
+    background-color: #f9f9f9;
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Buttons für Reservierungen */
+#reservation-list-ul button {
+    background-color: #388e3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.3s ease;
+}
+
+#reservation-list-ul button:hover {
+    background-color: #66bb6a;
+}
+
+.calendar-day.blocked {
+    background-color: red; /* Blockierte Tage werden rot */
 }
