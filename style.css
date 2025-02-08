@@ -1,0 +1,212 @@
+/* Toolbar */
+#toolbar {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 700px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #388e3c, #66bb6a); /* Grüner Verlauf für Sportlichkeit */
+    padding: 12px 20px;
+    border-radius: 25px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+#toolbar div {
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    padding: 12px 0;
+    transition: background 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    border-radius: 15px;
+    white-space: nowrap;
+}
+
+#toolbar div span {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+#toolbar div:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+#toolbar div:active {
+    transform: scale(1.05);
+}
+
+/* Responsiveness */
+@media (max-width: 900px) {
+    #toolbar {
+        padding: 10px 15px;
+    }
+
+    #toolbar div {
+        font-size: 10px;
+    }
+
+    #toolbar div span {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 600px) {
+    #toolbar {
+        width: 95%;
+        bottom: 10px;
+        padding: 8px 12px;
+    }
+
+    #toolbar div {
+        font-size: 9px;
+        padding: 8px 0;
+    }
+
+    #toolbar div span {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 400px) {
+    #toolbar {
+        width: 100%;
+        padding: 8px 5px;
+    }
+
+    #toolbar div {
+        font-size: 2px;
+    }
+
+    #toolbar div span {
+        font-size: 14px;
+    }
+}
+
+.head {
+    position: fixed; /* Fixiert den Header oben */
+    top: 0; /* Setzt den Header ganz oben */
+    left: 0;
+    width: 100%; /* Header soll die gesamte Breite einnehmen */
+    color: #fff; /* Weißer Text für gute Lesbarkeit */
+    background: linear-gradient(135deg, #2e7d32, #66bb6a); /* Grüner Verlauf für sportlichen Look */
+    padding: 15px;
+    font-size: 28px;
+    text-align: center;
+    text-transform: uppercase; /* Großbuchstaben für einen dynamischen Look */
+    letter-spacing: 3px; /* Etwas mehr Abstand zwischen den Buchstaben */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Schlagschatten für Tiefe */
+    margin: 0; /* Entfernt Standardabstände */
+    z-index: 10; /* Stellt sicher, dass der Header über anderem Inhalt liegt */
+}
+
+/* Menü-Button */
+#menu-button {
+    display: none;
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #388e3c, #66bb6a);
+    padding: 12px;
+    border-radius: 50%;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    z-index: 11;
+}
+
+#menu-button span {
+    color: white;
+    font-size: 24px;
+}
+
+/* Dropdown-Menü */
+#menu-dropdown {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    z-index: 12;
+    text-align: center;
+    width: 150px;
+}
+
+#menu-dropdown div {
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#menu-dropdown div:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Toolbar */
+#toolbar {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 700px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #388e3c, #66bb6a);
+    padding: 12px 20px;
+    border-radius: 25px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Toolbar-Buttons */
+#toolbar div {
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+    padding: 12px 0;
+    cursor: pointer;
+    border-radius: 15px;
+    white-space: nowrap;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#toolbar div:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+#toolbar div:active {
+    transform: scale(1.05);
+}
+
+/* Responsiveness */
+@media (max-width: 300px) {
+    #toolbar {
+        display: none;
+    }
+
+    #menu-button {
+        display: block;
+    }
+}
+
+/* Versteckt das Dropdown-Menu standardmäßig */
+.hidden {
+    display: none !important;
+}

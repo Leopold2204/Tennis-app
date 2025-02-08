@@ -1,0 +1,141 @@
+/* Allgemeine Stile */
+body {
+    background-color: #e3f2fd; /* Helleres Blau für eine sportliche, frische Atmosphäre */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Kopfbereich */
+
+
+@media (max-width: 768px) {
+    .head {
+        font-size: 24px; /* Kleinere Schriftgröße für Tablets */
+        padding: 10px; /* Weniger Padding für Tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .head {
+        font-size: 20px; /* Noch kleinere Schriftgröße für Handys */
+        padding: 8px; /* Noch weniger Padding */
+    }
+}
+
+
+
+#brett {
+    width: 90%;
+    max-width: 1000px;
+    min-height: 500px;  /* Mindesthöhe */
+    height: auto;  /* Höhe wächst mit dem Inhalt */
+    margin-top: 120px; /* Abstand nach unten, damit es nicht zu nah am Header ist */
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    margin-bottom: 100px;
+    color: #000;
+    
+}
+
+
+#brett-head h1 {
+    color: #000; /* Schwarze Schrift für die Kopfzeile */
+    font-size: 26px;  /* Etwas größere Schrift für den Titel */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+/* Chat-ähnlicher Stil für Nachrichten */
+/* Nachrichten-Container für bessere Struktur */
+#content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Nachrichten nach links ausrichten */
+    width: 90%;
+    max-width: 600px; /* Begrenzte Breite für Chat-Stil */
+}
+
+/* Alle Nachrichten haben den gleichen Stil */
+#content h1, #content h2, #content h3 {
+    padding: 15px;
+    border-radius: 10px; /* Abgerundete Ecken */
+    margin: 10px 0; /* Abstand zwischen Nachrichten */
+    background-color: white; /* Hintergrund auf Weiß setzen */
+    border: 2px solid rgba(0, 0, 0, 0.2); /* Leichter Rahmen */
+    width: fit-content; /* Breite richtet sich nach Inhalt */
+    max-width: 100%; /* Aber nicht über 100% der Eltern-Breite hinaus */
+}
+
+/* Unterschiedliche Farben für Wichtigkeit */
+#content h1 {
+    border-left: 6px solid rgb(134, 134, 134); /* Wichtigste Nachricht mit rotem Balken */
+    font-size: 24px;
+}
+
+#content h2 {
+    border-left: 6px solid #4169E1; /* Mittlere Wichtigkeit mit blauem Balken */
+    font-size: 24px;
+    position: relative; /* Position für Button */
+}
+
+#content h3 {
+    border-left: 6px solid #50C878; /* Geringere Wichtigkeit mit lila Balken */
+    font-size: 24px;
+}
+
+/* "Ich bin dabei"-Button unter Nachricht Typ 2 */
+.teilnehmen-button {
+    display: block;
+    margin-top: 10px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background: #4169E1; /* Sportliches Grün */
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.teilnehmen-button:hover {
+    background: #285eff;
+    transform: scale(1.05);
+}
+
+.teilnehmen-button:active {
+    transform: scale(1);
+}
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+    #brett {
+        margin-top: 140px; /* Mehr Platz nach oben für Tablets */
+        width: 95%; /* Etwas breiter für kleinere Screens */
+        min-height: 250px; /* Kleinere Mindesthöhe */
+    }
+}
+
+@media (max-width: 480px) {
+    #brett {
+        margin-top: 160px; /* Noch mehr Platz für Smartphones */
+        width: 100%;
+        min-height: 200px; /* Kleinere Mindesthöhe für Handys */
+        padding: 20px;
+    }
+}
