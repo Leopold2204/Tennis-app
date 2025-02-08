@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" href="/css/chat.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="shortcut icon" href="../img\faivicon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <header class="head">
+        <h1>TCL Chat</h1>
+    </header>
+
+    <div id="chat-container">
+        <div id="chat-box"></div>
+        <div id="chat-input">
+            <input type="text" id="message" placeholder="Nachricht eingeben...">
+            <button id="send-button">Senden</button>
+        </div>
+    </div>
+    
+    
+    
+    
+    <script>
+        const chatBox = document.getElementById("chat-box");
+        const messageInput = document.getElementById("message");
+        const sendButton = document.getElementById("send-button");
+    
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message) {
+                const messageContainer = document.createElement("div");
+                messageContainer.classList.add("message-container");
+    
+                // Nachricht-Bubble erstellen
+                const messageElement = document.createElement("div");
+                messageElement.classList.add("message");
+    
+                // Name & Uhrzeit hinzufügen
+                const now = new Date();
+                const timeString = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+    
+                const messageInfo = document.createElement("div");
+                messageInfo.classList.add("message-info");
+                messageInfo.innerText = "John • " + timeString; // Name + Uhrzeit
+    
+                messageElement.appendChild(document.createTextNode(message));
+                messageContainer.appendChild(messageElement);
+                messageContainer.appendChild(messageInfo);
+                chatBox.appendChild(messageContainer);
+                chatBox.scrollTop = chatBox.scrollHeight;
+                messageInput.value = "";
+            }
+        }
+    
+        sendButton.addEventListener("click", sendMessage);
+        messageInput.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") sendMessage();
+        });
+    </script>
+    
+    
+    
+    
+    
+
+    <!-- Menü-Button für kleine Bildschirme -->
+    <div id="menu-button">
+        <span class="material-symbols-outlined">menu</span>
+    </div>
+
+    <!-- Dropdown-Menü für kleine Bildschirme -->
+    <div id="menu-dropdown" class="hidden">
+        <div id="Admin"><span class="material-symbols-outlined">admin_panel_settings</span><span>Admin</span></div>
+        <div id="Spielplan"><span class="material-symbols-outlined">calendar_month</span><span>Spielplan</span></div>
+        <div id="Tunire"><span class="material-symbols-outlined">emoji_events</span><span>Turniere</span></div>
+        <div id="Home"><span class="material-symbols-outlined">home</span><span>Home</span></div>
+        <div id="Chat"><span class="material-symbols-outlined">chat</span><span>Chat</span></div>
+        <div id="platzreservierung"><span class="material-symbols-outlined">event_seat</span><span>Platz</span></div>
+        <div id="Sonstiges"><span class="material-symbols-outlined">more_horiz</span><span>Sonstiges</span></div>
+    </div>
+
+    <!-- Normale Toolbar -->
+    <div id="toolbar">
+        <div id="Admin"><span class="material-symbols-outlined">admin_panel_settings</span><span>Admin</span></div>
+        <div id="Spielplan"><span class="material-symbols-outlined">calendar_month</span><span>Spielplan</span></div>
+        <div id="Tunire"><span class="material-symbols-outlined">emoji_events</span><span>Turniere</span></div>
+        <div id="Home"><span class="material-symbols-outlined">home</span><span>Home</span></div>
+        <div id="Chat"><span class="material-symbols-outlined">chat</span><span>Chat</span></div>
+        <div id="platzreservierung"><span class="material-symbols-outlined">event_seat</span><span>Platz</span></div>
+        <div id="Sonstiges"><span class="material-symbols-outlined">more_horiz</span><span>Sonstiges</span></div>
+    </div>
+
+    <script>
+        // JavaScript für das Menü
+        document.getElementById("menu-button").addEventListener("click", function () {
+            document.getElementById("menu-dropdown").classList.toggle("hidden");
+        });
+    </script>
+
+</body>
+
+
+</html>
