@@ -1,0 +1,100 @@
+/* Allgemeine Reset-Stile */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Header */
+.head {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #fff;
+    background: linear-gradient(135deg, #2e7d32, #66bb6a); /* Grüner Verlauf für sportlichen Look */
+    padding: 15px;
+    font-size: 28px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+/* Container für das Fenster */
+#window-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Um das Fenster nach oben zu verschieben */
+    height: 100vh;
+    margin-top: 100px; /* Platz für den fixierten Header (leicht nach unten verschoben) */
+}
+
+/* Fenster-Stil ohne bunten Rahmen */
+#window {
+    width: 90%;
+    max-width: 800px; /* Maximale Breite */
+    height: 75%; /* Höhe des Fensters angepasst, damit es nicht zu groß wird */
+    border-radius: 15px; /* Abgerundete Ecken */
+    overflow: hidden;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3); /* Schatten für das Fenster */
+    background: #fff;
+}
+
+/* Iframe-Stil */
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Responsivität für kleinere Bildschirme */
+@media (max-width: 1024px) {
+    .head {
+        font-size: 26px;
+        padding: 12px;
+    }
+
+    #window {
+        width: 90%;
+        height: 70%; /* Fensterhöhe für Tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .head {
+        font-size: 24px;
+        padding: 10px;
+    }
+
+    #window {
+        width: 95%;
+        height: 65%; /* Fensterhöhe bei kleinen Tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .head {
+        font-size: 20px;
+        padding: 8px;
+    }
+
+    #window {
+        width: 100%;
+        height: 60%; /* Weitere Anpassung für sehr kleine Bildschirme */
+    }
+}
+
+/* Sehr kleine Bildschirme / mobile Geräte */
+@media (max-width: 320px) {
+    .head {
+        font-size: 18px;
+        padding: 6px;
+    }
+
+    #window {
+        width: 100%;
+        height: 55%; /* Weitere Anpassung für extrem kleine Bildschirme */
+    }
+}

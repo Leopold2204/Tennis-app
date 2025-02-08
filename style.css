@@ -1,4 +1,9 @@
+body{
+    font-family: Arial, sans-serif;
+}
 /* Toolbar */
+
+
 #toolbar {
     position: fixed;
     bottom: 15px;
