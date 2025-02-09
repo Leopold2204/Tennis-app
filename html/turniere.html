@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schwarzes Brett</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="shortcut icon" href="../img\faivicon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <header class="head">
+        <h1>TCL Chat</h1>
+    </header>
+
+    <!-- Menü-Button für kleine Bildschirme -->
+    <div id="menu-button">
+        <span class="material-symbols-outlined">menu</span>
+    </div>
+
+    <!-- Dropdown-Menü für kleine Bildschirme -->
+    <div id="menu-dropdown" class="hidden">
+        <div id="Admin"><span class="material-symbols-outlined">admin_panel_settings</span><span>Admin</span></div>
+        <div id="Spielplan"><span class="material-symbols-outlined">calendar_month</span><span>Spielplan</span></div>
+        <div id="Tunire"><span class="material-symbols-outlined">emoji_events</span><span>Turniere</span></div>
+        <div id="Home"><span class="material-symbols-outlined">home</span><span>Home</span></div>
+        <div id="Chat"><span class="material-symbols-outlined">chat</span><span>Chat</span></div>
+        <div id="platzreservierung"><span class="material-symbols-outlined">event_seat</span><span>Platz</span></div>
+        <div id="Sonstiges"><span class="material-symbols-outlined">more_horiz</span><span>Sonstiges</span></div>
+    </div>
+
+    <!-- Normale Toolbar -->
+    <div id="toolbar">
+        <div id="Admin"><span class="material-symbols-outlined">admin_panel_settings</span><span>Admin</span></div>
+        <div id="Spielplan"><span class="material-symbols-outlined">calendar_month</span><span>Spielplan</span></div>
+        <div id="Tunire"><span class="material-symbols-outlined">emoji_events</span><span>Turniere</span></div>
+        <div id="Home"><span class="material-symbols-outlined">home</span><span>Home</span></div>
+        <div id="Chat"><span class="material-symbols-outlined">chat</span><span>Chat</span></div>
+        <div id="platzreservierung"><span class="material-symbols-outlined">event_seat</span><span>Platz</span></div>
+        <div id="Sonstiges"><span class="material-symbols-outlined">more_horiz</span><span>Sonstiges</span></div>
+    </div>
+
+    <script>
+
+
+        // JavaScript für das Menü
+        document.getElementById("menu-button").addEventListener("click", function () {
+            document.getElementById("menu-dropdown").classList.toggle("hidden");
+        });
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            function handleNavigation(event) {
+                const targetId = event.target.closest("div")?.id;
+                const links = {
+                    "Admin": "admin.html",
+                    "Spielplan": "spielplan.html",
+                    "Tunire": "turniere.html",
+                    "Home": "../index.html",
+                    "Chat": "chat.html",
+                    "platzreservierung": "platzreservierung.html",
+                    "Sonstiges": "sonstiges.html"
+                };
+                if (links[targetId]) {
+                    window.location.href = links[targetId];
+                }
+            }
+
+            document.getElementById("toolbar").addEventListener("click", handleNavigation);
+            document.getElementById("menu-dropdown").addEventListener("click", handleNavigation);
+        });
+
+
+    </script>
+
+</body>
+
+
+</html>
