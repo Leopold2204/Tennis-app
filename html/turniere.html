@@ -4,21 +4,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schwarzes Brett</title>
-    <link rel="stylesheet" href="/css/index.css">
+    <title>Turniere</title>
+    <link rel="stylesheet" href="/css/turniere.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="shortcut icon" href="../img\faivicon.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-
 </head>
 
 <body>
-
     <header class="head">
-        <h1>Turniere</h1>
-    </header>
+        <h1>TCL Chat</h1>
+    </header >
+    <div>
+        <br><br><br><br><br><br><br><br><br><br>
+    </div>
 
-    <!-- Menü-Button für kleine Bildschirme -->
+    <div class="dashboard">
+        <h2>Spieler-Dashboard</h2>
+
+        <div class="section ranking">
+            <h3>Rangliste</h3>
+            <table>
+                <tr>
+                    <th>Platz</th>
+                    <th>Spieler</th>
+                    <th>Punkte</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Spieler A</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Spieler B</td>
+                    <td>8</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section game">
+            <p><strong>Gegner:</strong> Spieler B</p>
+            <p><strong>Datum:</strong> <span id="date">Noch nicht festgelegt</span></p>
+            <p><strong>Uhrzeit:</strong> <span id="time">Noch nicht festgelegt</span></p>
+            <button onclick="openModal('termineModal')">Termin eintragen</button>
+            <button onclick="confirmAppointment()">Termin annehmen</button>
+            <p><strong>Ergebnis:</strong> <span id="score">Noch nicht eingetragen</span></p>
+            <button onclick="openModal('ergebnisModal')">Ergebnis eintragen</button>
+            <button onclick="confirmScore()">Ergebnis bestätigen</button>
+        </div>
+
+        <div class="section tournament-tree">
+            <h3>Turnierbaum</h3>
+            <pre>
+              Spieler A ──┐
+                          ├── Gewinner 1 ──┐
+              Spieler B ──┘                │
+                                           ├── Turniersieger
+              Spieler C ──┐                │
+                          ├── Gewinner 2 ──┘
+              Spieler D ──┘
+            </pre>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="overlay" onclick="closeModal()"></div>
+    <div class="modal" id="termineModal">
+        <h3>Terminvorschlag</h3>
+        <input type="date" id="datepicker" placeholder="Datum auswählen">
+        <input type="time" id="timepicker" placeholder="Uhrzeit auswählen">
+        <button onclick="saveProposal()">Vorschlagen</button>
+        <button onclick="closeModal()">Schließen</button>
+    </div>
+    <div class="modal" id="ergebnisModal">
+        <h3>Ergebnis eintragen</h3>
+
+        <div id="satz1">
+            <input maxlength="1" placeholder="Spieler A" type="number">
+            <input maxlength="1" placeholder="Spieler B" type="number">
+            <span>Satz 1</span>
+        </div>
+
+        <div id="satz1">
+            <input maxlength="1" placeholder="Spieler A" type="number">
+            <input maxlength="1" placeholder="Spieler B" type="number">
+            <span>Satz 2</span>
+        </div>
+
+        <div id="satz1">
+            <input maxlength="2" placeholder="Spieler A" type="number">
+            <input maxlength="2" placeholder="Spieler B" type="number">
+            <span>Satz 3</span>
+        </div>
+
+        <button onclick="saveScore()">Bestätigen</button>
+        <button onclick="closeModal()">Schließen</button>
+    </div>
+    <div>
+        <br><br><br><br><br><br><br><br><br><br>
+    </div>
+
+
+    <script>
+        function openModal(id) {
+            document.getElementById(id).style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(modal => modal.style.display = 'none');
+            document.getElementById('overlay').style.display = 'none';
+        }
+        function saveProposal() {
+            const date = document.getElementById('datepicker').value;
+            const time = document.getElementById('timepicker').value;
+            if (date && time) {
+                document.getElementById('date').textContent = date;
+                document.getElementById('time').textContent = time;
+                closeModal();
+            }
+        }
+        function confirmAppointment() {
+            alert("Termin wurde bestätigt!");
+        }
+        function saveScore() {
+            const scoreA1 = document.getElementById('scorePlayerA1').value;
+            const scoreB1 = document.getElementById('scorePlayerB1').value;
+            const scoreA2 = document.getElementById('scorePlayerA2').value;
+            const scoreB2 = document.getElementById('scorePlayerB2').value;
+            const scoreA3 = document.getElementById('scorePlayerA3').value;
+            const scoreB3 = document.getElementById('scorePlayerB3').value;
+
+            // Wenn alle Felder ausgefüllt sind, Ergebnis anzeigen
+            if (scoreA1 && scoreB1 && scoreA2 && scoreB2 && scoreA3 && scoreB3) {
+                document.getElementById('score').textContent =
+                    `Spieler A: ${scoreA1}-${scoreA2}-${scoreA3}, Spieler B: ${scoreB1}-${scoreB2}-${scoreB3}`;
+                closeModal();
+            } else {
+                alert("Bitte alle Felder ausfüllen.");
+            }
+        }
+        function confirmScore() {
+            alert("Ergebnis wurde bestätigt!");
+        }
+    </script>
+
+
+
+
     <div id="menu-button">
         <span class="material-symbols-outlined">menu</span>
     </div>
@@ -77,8 +209,6 @@
 
 
     </script>
-
 </body>
-
 
 </html>
