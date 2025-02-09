@@ -46,10 +46,36 @@
     </div>
 
     <script>
+
+
         // JavaScript für das Menü
         document.getElementById("menu-button").addEventListener("click", function () {
             document.getElementById("menu-dropdown").classList.toggle("hidden");
         });
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            function handleNavigation(event) {
+                const targetId = event.target.closest("div")?.id;
+                const links = {
+                    "Admin": "html/admin.html",
+                    "Spielplan": "html/spielplan.html",
+                    "Tunire": "html/turniere.html",
+                    "Home": "../index.html",
+                    "Chat": "html/chat.html",
+                    "platzreservierung": "html/platzreservierung.html",
+                    "Sonstiges": "html/sonstiges.html"
+                };
+                if (links[targetId]) {
+                    window.location.href = links[targetId];
+                }
+            }
+
+            document.getElementById("toolbar").addEventListener("click", handleNavigation);
+            document.getElementById("menu-dropdown").addEventListener("click", handleNavigation);
+        });
+
+
     </script>
 
 </body>

@@ -13,7 +13,7 @@
 
 <body>
 
-   <header class="head">
+    <header class="head">
         <h1 style="color: rgb(255, 255, 255);">Platzreservierung</h1>
     </header>
 
@@ -90,11 +90,45 @@
 
         <!-- Reservierungen unterhalb der Eingabefelder -->
         <div class="reservation-list">
-            <h3>Deine Reservierungen            </h3>
+            <h3>Deine Reservierungen </h3>
             <ul id="reservation-list-ul"></ul>
         </div>
         <br><br><br><br><br>
     </div>
+
+    <script>
+
+
+
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            function handleNavigation(event) {
+                const targetId = event.target.closest("div")?.id;
+                const links = {
+                    "Admin": "admin.html",
+                    "Spielplan": "spielplan.html",
+                    "Tunire": "turniere.html",
+                    "Home": "../index.html",
+                    "Chat": "chat.html",
+                    "platzreservierung": "platzreservierung.html",
+                    "Sonstiges": "sonstiges.html"
+                };
+                if (links[targetId]) {
+                    window.location.href = links[targetId];
+                }
+            }
+
+            document.getElementById("toolbar").addEventListener("click", handleNavigation);
+            document.getElementById("menu-dropdown").addEventListener("click", handleNavigation);
+        });
+
+        // JavaScript für das Menü
+        document.getElementById("menu-button").addEventListener("click", function () {
+            document.getElementById("menu-dropdown").classList.toggle("hidden");
+        });
+    </script>
 
     <script src="..\js\platzreservierung.js"></script>
 

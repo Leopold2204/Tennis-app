@@ -66,6 +66,36 @@
             if (event.key === "Enter") sendMessage();
         });
     </script>
+
+<script>
+
+
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        function handleNavigation(event) {
+            const targetId = event.target.closest("div")?.id;
+            const links = {
+                "Admin": "admin.html",
+                "Spielplan": "spielplan.html",
+                "Tunire": "turniere.html",
+                "Home": "../index.html",
+                "Chat": "chat.html",
+                "platzreservierung": "platzreservierung.html",
+                "Sonstiges": "sonstiges.html"
+            };
+            if (links[targetId]) {
+                window.location.href = links[targetId];
+            }
+        }
+
+        document.getElementById("toolbar").addEventListener("click", handleNavigation);
+        document.getElementById("menu-dropdown").addEventListener("click", handleNavigation);
+    });
+
+
+</script>
     
     
     
