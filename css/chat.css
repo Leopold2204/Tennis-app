@@ -1,6 +1,6 @@
 /* Allgemeine Stile */
 body {
-    background-color: #e3f2fd; /* Helleres Blau für eine sportliche, frische Atmosphäre */
+    background-color: #e3f2fd; 
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -31,8 +31,9 @@ body {
     padding: 15px;
     overflow-y: auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;  /* Neueste Nachrichten unten */
     gap: 10px;
+    scroll-behavior: smooth;
 }
 
 /* Nachricht-Container */
@@ -54,11 +55,11 @@ body {
     word-wrap: break-word;
 }
 
-/* Name & Uhrzeit unten links */
-.message .message-info {
-    font-size: 5px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-top: 2px;
+/* Name & Uhrzeit außerhalb der Bubble */
+.message-info {
+    font-size: 12px;
+    color: black;
+    margin-top: 5px;
 }
 
 /* Eingabe-Feld */
@@ -96,20 +97,19 @@ body {
 /* Für kleinere Bildschirme, wie Mobilgeräte */
 @media screen and (max-width: 768px) {
     body {
-        padding: 0 10px; /* Etwas Platz auf der Seite für kleinere Bildschirme */
+        padding: 0 10px;
     }
 
-    /* Header kleiner machen */
     header.head {
-        font-size: 16px; /* Schriftgröße im Header verringern */
-        margin: 5px 0;  /* Weniger Abstand oben und unten */
+        font-size: 16px;
+        margin: 5px 0;
     }
 
     #chat-container {
         width: 100%;
-        max-width: 500px; /* Maximalbreite verringern */
-        height: 70vh; /* Container-Höhe etwas reduzieren */
-        margin: 40px auto 20px; /* Weniger Abstand zum oberen Rand */
+        max-width: 500px;
+        height: 70vh;
+        margin: 40px auto 20px;
     }
 
     #chat-box {
@@ -117,12 +117,12 @@ body {
     }
 
     .message {
-        font-size: 14px; /* Kleinere Schriftgröße für mobile Geräte */
+        font-size: 14px;
         padding: 10px;
     }
 
     #message {
-        font-size: 13px; /* Kleinere Schriftgröße im Eingabefeld */
+        font-size: 13px;
     }
 
     #send-button {
@@ -130,22 +130,20 @@ body {
         padding: 8px 12px;
     }
 
-    /* Verkleinern des Abstandes der Nachricht-Container */
     .message-container {
         max-width: 90%;
     }
 }
 
-/* Für sehr kleine Bildschirme (z. B. Smartphones im Hochformat) */
 @media screen and (max-width: 480px) {
     header.head {
-        font-size: 14px; /* Noch kleinere Schriftgröße im Header */
-        margin: 0; /* Kein Abstand oben */
+        font-size: 14px;
+        margin: 0;
     }
 
     #chat-container {
-        margin: 20px auto 20px; /* Weniger Abstand oben für sehr kleine Bildschirme */
-        height: 60vh; /* Container-Höhe weiter anpassen */
+        margin: 20px auto 20px;
+        height: 60vh;
     }
 
     #chat-input {
@@ -154,25 +152,23 @@ body {
 
     #message {
         width: 100%;
-        margin-bottom: 10px; /* Abstand zum Sendeknopf */
+        margin-bottom: 10px;
     }
 
     #send-button {
         width: 100%;
     }
 
-    /* Verkürzte Nachricht-Container */
     .message-container {
         max-width: 85%;
     }
 
     .message {
-        font-size: 13px; /* Noch kleinere Schriftgröße */
+        font-size: 13px;
         padding: 8px;
     }
 }
 
-/* Für sehr breite Bildschirme (z. B. große Desktops) */
 @media screen and (min-width: 1200px) {
     #chat-container {
         width: 80%;

@@ -5,12 +5,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
-    <link rel="stylesheet" href="/css/chat.css">
+    <link rel="stylesheet" href="../css/chat.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="shortcut icon" href="../img\faivicon.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 
 </head>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const chatBox = document.getElementById("chat-box");
+        const messageInput = document.getElementById("message");
+        const sendButton = document.getElementById("send-button");
+        const username = localStorage.getItem("name") || "Gast";
+
+        // Funktion, um Nachrichten aus der Datenbank zu holen
+        function fetchMessages() {
+            fetch("../php/chat.php?action=fetch")
+                .then(response => response.json())
+                .then(data => {
+                    // Den Nachrichtenbereich leeren
+                    chatBox.innerHTML = "";
+
+                    // Nachrichten umkehren und in den Chat-Box-Bereich einfügen
+                    data.reverse().forEach(msg => {
+                        const messageDiv = document.createElement("div");
+                        messageDiv.classList.add("message-container");
+
+                        // Zeit im gewünschten Format (1.5.25 14:20) formatieren
+                        const date = new Date(msg.time);
+                        const formattedDate = `${date.getDate()}.${date.getMonth() + 1}.${String(date.getFullYear()).slice(-2)}`;
+                        const formattedTime = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+
+                        messageDiv.innerHTML = `
+                        <div class="message">
+                            ${msg.message}
+                        </div>
+                        <div class="message-info">
+                            <span>${msg.name}</span> - <span>${formattedDate} ${formattedTime}</span>
+                        </div>
+                    `;
+                        chatBox.appendChild(messageDiv);
+                    });
+
+                    // Scrollen nach unten, um die neueste Nachricht zu sehen
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                });
+        }
+
+        // Funktion, um eine Nachricht zu speichern
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message === "") return;
+
+            fetch("../php/chat.php?action=save", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `name=${encodeURIComponent(username)}&message=${encodeURIComponent(message)}`
+            }).then(() => {
+                messageInput.value = "";
+                fetchMessages();
+            });
+        }
+
+        sendButton.addEventListener("click", sendMessage);
+        messageInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") sendMessage();
+        });
+
+        // Initiale Nachrichtenabfrage
+        fetchMessages();
+
+        // Alle 10 Sekunden die Nachrichten abrufen
+        setInterval(fetchMessages, 10000);
+    });
+
+</script>
 
 <body>
 
@@ -25,82 +94,41 @@
             <button id="send-button">Senden</button>
         </div>
     </div>
-    
-    
-    
-    
+
+
+
+
     <script>
-        const chatBox = document.getElementById("chat-box");
-        const messageInput = document.getElementById("message");
-        const sendButton = document.getElementById("send-button");
-    
-        function sendMessage() {
-            const message = messageInput.value.trim();
-            if (message) {
-                const messageContainer = document.createElement("div");
-                messageContainer.classList.add("message-container");
-    
-                // Nachricht-Bubble erstellen
-                const messageElement = document.createElement("div");
-                messageElement.classList.add("message");
-    
-                // Name & Uhrzeit hinzufügen
-                const now = new Date();
-                const timeString = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-    
-                const messageInfo = document.createElement("div");
-                messageInfo.classList.add("message-info");
-                messageInfo.innerText = "John • " + timeString; // Name + Uhrzeit
-    
-                messageElement.appendChild(document.createTextNode(message));
-                messageContainer.appendChild(messageElement);
-                messageContainer.appendChild(messageInfo);
-                chatBox.appendChild(messageContainer);
-                chatBox.scrollTop = chatBox.scrollHeight;
-                messageInput.value = "";
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            function handleNavigation(event) {
+                const targetId = event.target.closest("div")?.id;
+                const links = {
+                    "Admin": "admin.html",
+                    "Spielplan": "spielplan.html",
+                    "Tunire": "turniere.html",
+                    "Home": "../index.html",
+                    "Chat": "chat.html",
+                    "platzreservierung": "platzreservierung.html",
+                    "Sonstiges": "sonstiges.html"
+                };
+                if (links[targetId]) {
+                    window.location.href = links[targetId];
+                }
             }
-        }
-    
-        sendButton.addEventListener("click", sendMessage);
-        messageInput.addEventListener("keypress", function (event) {
-            if (event.key === "Enter") sendMessage();
+
+            document.getElementById("toolbar").addEventListener("click", handleNavigation);
+            document.getElementById("menu-dropdown").addEventListener("click", handleNavigation);
         });
+
+
     </script>
 
-<script>
 
 
 
-//test
 
-    document.addEventListener("DOMContentLoaded", function () {
-        function handleNavigation(event) {
-            const targetId = event.target.closest("div")?.id;
-            const links = {
-                "Admin": "admin.html",
-                "Spielplan": "spielplan.html",
-                "Tunire": "turniere.html",
-                "Home": "../index.html",
-                "Chat": "chat.html",
-                "platzreservierung": "platzreservierung.html",
-                "Sonstiges": "sonstiges.html"
-            };
-            if (links[targetId]) {
-                window.location.href = links[targetId];
-            }
-        }
-
-        document.getElementById("toolbar").addEventListener("click", handleNavigation);
-        document.getElementById("menu-dropdown").addEventListener("click", handleNavigation);
-    });
-
-
-</script>
-    
-    
-    
-    
-    
 
     <!-- Menü-Button für kleine Bildschirme -->
     <div id="menu-button">

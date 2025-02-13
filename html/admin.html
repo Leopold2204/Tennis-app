@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    <script src="../admin.js"></script>
 
     <!-- Admin Navigation -->
     <header class="admin-header">
@@ -200,30 +201,7 @@
         });
 
         // Nachrichten anzeigen
-        document.getElementById("loadMessages").addEventListener("click", function () {
-            const messages = [
-                { sender: 'Max Mustermann', text: 'Hallo, wie gehts?' },
-                { sender: 'Erika Mustermann', text: 'Mir gehts gut, danke!' }
-            ];
-            const messageListPopup = document.getElementById("messageListPopup");
-            messageListPopup.innerHTML = '';
-            messages.forEach(message => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${message.sender}</strong>: ${message.text} <button class="deleteMessage">Löschen</button>`;
-                messageListPopup.appendChild(li);
-            });
-
-            document.getElementById("messagesPopup").classList.remove("hidden");
-
-            // Löschen einer Nachricht
-            const deleteButtons = document.querySelectorAll('.deleteMessage');
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const li = button.parentElement;
-                    li.remove();
-                });
-            });
-        });
+        
 
         document.getElementById("closeMessagesPopup").addEventListener("click", function () {
             document.getElementById("messagesPopup").classList.add("hidden");

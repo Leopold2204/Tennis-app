@@ -74,10 +74,14 @@ button:hover {
     border-radius: 10px;
     max-width: 400px;
     text-align: center;
+    overflow: hidden;
+    max-height: 500px;
+    overflow-y: scroll;
 }
 
 /* Formulare */
-input, textarea {
+input,
+textarea {
     width: calc(100% - 20px);
     padding: 8px;
     margin: 5px 0;
@@ -113,6 +117,7 @@ ul li button {
 
 /* Mobile Styles */
 @media (max-width: 768px) {
+
     /* Header Schriftgröße und Padding anpassen */
     .admin-header h1 {
         font-size: 20px;
@@ -142,6 +147,7 @@ ul li button {
 
 /* Sehr kleine Bildschirme (z.B. Smartphones) */
 @media (max-width: 480px) {
+
     /* Header Schriftgröße weiter anpassen */
     .admin-header h1 {
         font-size: 18px;
@@ -155,7 +161,9 @@ ul li button {
     }
 
     /* Formulare und Buttons weiter anpassen */
-    input, textarea, button {
+    input,
+    textarea,
+    button {
         font-size: 12px;
     }
 
@@ -164,3 +172,4 @@ ul li button {
         font-size: 14px;
     }
 }
+
