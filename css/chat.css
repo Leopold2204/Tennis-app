@@ -46,7 +46,7 @@ body {
 
 /* Nachricht-Bubble */
 .message {
-    background: #2e7d32;
+    background: #4aa54f;
     color: white;
     padding: 12px;
     border-radius: 10px;
@@ -82,7 +82,7 @@ body {
     padding: 10px 15px;
     margin-left: 5px;
     border: none;
-    background: #2e7d32;
+    background: #4aa54f;
     color: white;
     border-radius: 5px;
     cursor: pointer;

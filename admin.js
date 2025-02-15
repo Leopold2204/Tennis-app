@@ -1,5 +1,3 @@
-//chat Administation
-
 document.addEventListener("DOMContentLoaded", function () {
     // Popups steuern
     document.getElementById("openEventModal").addEventListener("click", function () {
@@ -11,24 +9,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Nachrichten anzeigen
     document.getElementById("loadMessages").addEventListener("click", function () {
-        // Nachrichten aus der Datenbank abrufen
         fetch("../php/chat.php?action=fetch")
             .then(response => response.json())
             .then(data => {
                 const messageListPopup = document.getElementById("messageListPopup");
                 messageListPopup.innerHTML = ''; // Bestehende Nachrichten entfernen
+
                 data.forEach(message => {
                     const li = document.createElement('li');
                     li.innerHTML = `
-                        <strong>${message.name}</strong>: ${message.message} 
-                        <button class="deleteMessage" data-id="${message.id}">Löschen</button>
+                        <span class="sender-name">${message.name}</span>
+                        <strong>${message.message}</strong>
+                        <button id='deletebutton' class="deleteMessage" data-id="${message.id}">&#128465;&#65039;</button>
                     `;
                     messageListPopup.appendChild(li);
                 });
 
+
                 document.getElementById("messagesPopup").classList.remove("hidden");
 
+                // Event-Listener für die Löschen-Buttons
+                document.querySelectorAll(".deleteMessage").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const messageId = this.getAttribute("data-id");
 
+                        fetch(`../php/chat.php?action=deleteMessage&id=${messageId}`)
+                            .then(response => response.json())
+                            .then(result => {
+                                if (result.success) {
+                                    this.parentElement.remove(); // Nachricht aus der Liste entfernen
+                                } else {
+                                    alert("Fehler beim Löschen der Nachricht");
+                                }
+                            });
+                    });
+                });
             });
     });
 
@@ -36,5 +51,3 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("messagesPopup").classList.add("hidden");
     });
 });
-
-//chat Administation

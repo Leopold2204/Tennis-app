@@ -16,7 +16,7 @@
         const chatBox = document.getElementById("chat-box");
         const messageInput = document.getElementById("message");
         const sendButton = document.getElementById("send-button");
-        const username = localStorage.getItem("name") || "Gast";
+        const username = localStorage.getItem("name") || "Nicht Authorisierter Anwender";
 
         // Funktion, um Nachrichten aus der Datenbank zu holen
         function fetchMessages() {
@@ -27,7 +27,7 @@
                     chatBox.innerHTML = "";
 
                     // Nachrichten umkehren und in den Chat-Box-Bereich einfügen
-                    data.reverse().forEach(msg => {
+                    data.forEach(msg => {
                         const messageDiv = document.createElement("div");
                         messageDiv.classList.add("message-container");
 

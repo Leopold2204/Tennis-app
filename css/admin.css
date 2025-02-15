@@ -93,7 +93,6 @@ textarea {
     height: 80px;
 }
 
-/* Listen */
 ul {
     list-style: none;
     padding: 0;
@@ -114,6 +113,60 @@ ul li button {
     font-size: 12px;
     width: 33%;
 }
+
+#chat ul li {
+    background: white;
+    padding: 10px;
+    margin: 2px 0;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    /* Name, Nachricht & Button in einer Zeile */
+    justify-content: space-between;
+    /* Lässt Button rechts stehen */
+    align-items: center;
+    /* Vertikale Ausrichtung */
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+#chat ul li strong {
+    max-width: 60%;
+    display: inline-block;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+#chat ul li .sender-name {
+    font-weight: bold;
+    color: #555;
+    margin-right: 10px;
+    /* Abstand zwischen Name und Nachricht */
+    width: 25%;
+}
+
+#chat ul li button {
+    margin-left: 10px;
+    /* Abstand zwischen Nachricht und Button */
+}
+
+#chat ul li button:hover {
+    background: rgb(209, 0, 0);
+}
+
+#deletebutton {
+    width: 15%;
+    aspect-ratio: 1 / 1;
+    background: red;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: larger;
+}
+
 
 /* Mobile Styles */
 @media (max-width: 768px) {
@@ -172,4 +225,3 @@ ul li button {
         font-size: 14px;
     }
 }
-
