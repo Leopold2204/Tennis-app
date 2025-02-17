@@ -5,3 +5,15 @@ CREATE TABLE `messages` (
   `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
+CREATE TABLE `backbrett` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nachricht` text,
+  `wichtigkeit` int DEFAULT NULL,
+  `eingtragung` varchar(45) DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `mac_address` varchar(45) DEFAULT NULL,
+  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

@@ -28,8 +28,220 @@
             </h2>
             <h3>Nachricht Typ 3</h3>
         </div>
-
+        <button id="open-popup">
+            <span class="material-symbols-outlined">person_search</span>
+        </button>
     </div>
+    <!-- Spieler suchen Button -->
+
+
+    <!-- Spieler suchen Popup -->
+    <div id="spieler-suchen-popup">
+        <div class="popup-content">
+            <h2>Spieler suchen</h2>
+            <label for="spieler-name">Dein Name:</label>
+            <input type="text" id="spieler-name" placeholder="Max Mustermann">
+
+            <label for="spieler-telefon">Telefon (optional):</label>
+            <input type="tel" id="spieler-telefon" placeholder="0123 456789">
+
+            <label for="spieler-email">E-Mail (optional):</label>
+            <input type="email" id="spieler-email" placeholder="max@beispiel.de">
+
+            <label for="spieler-nachricht">Zusätzliche Nachricht:</label>
+            <textarea id="spieler-nachricht" placeholder="Ich suche einen Tennispartner für Samstag..."></textarea>
+
+            <button onclick="spilersuche()" id="spieler-absenden">Absenden</button>
+            <button id="spieler-schliessen">Schließen</button>
+        </div>
+    </div>
+
+
+    <div id="teilnehmen-popup" class="popup">
+        <div class="popup-content">
+            <h2>Dein Name</h2>
+            <input type="text" id="teilnehmer-name" placeholder="Dein Name">
+            <button id="teilnehmen-speichern">Speichern</button>
+            <button id="teilnehmen-schliessen">Schließen</button>
+        </div>
+    </div>
+
+
+    <script>
+
+        document.getElementById('open-popup').addEventListener('click', function () {
+            document.getElementById('spieler-suchen-popup').classList.add('show');
+        });
+
+        document.getElementById('spieler-schliessen').addEventListener('click', function () {
+            document.getElementById('spieler-suchen-popup').classList.remove('show');
+        });
+
+        // Schließen, wenn außerhalb des Popups geklickt wird
+        document.getElementById('spieler-suchen-popup').addEventListener('click', function (event) {
+            if (event.target === this) {
+                this.classList.remove('show');
+            }
+        });
+        function spilersuche() {
+            // Hier nur den eigentlichen Nachrichtentext verwenden
+            let name = document.getElementById('spieler-name').value;
+            let telefon = document.getElementById('spieler-telefon').value;
+            let email = document.getElementById('spieler-email').value;
+            let nachricht = document.getElementById('spieler-nachricht').value;
+
+            let ganznachricht = name + ' (' + email + ') ' + ' (' + telefon + ') ' + 'sucht einen spieler. Er möchte noch sagen: ' + nachricht;
+
+            // Hier den 'fetch'-Request in die Funktion einfügen, um die Nachricht zu senden
+            let wichtigkeit = 1; // Beispielwert für Wichtigkeit, anpassen falls nötig
+
+            fetch('php/nachrichten.php', {  // Gib hier den korrekten Pfad zu deinem PHP-Skript an
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    nachricht: ganznachricht,
+                    wichtigkeit: wichtigkeit
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('spieler-suchen-popup').classList.remove('show');
+                        ladeNachrichten();  // Nachrichten neu laden, um die aktuelle Nachricht anzuzeigen
+                    } else {
+                        alert('Fehler beim Senden der Nachricht!');
+                    }
+                })
+                .catch(error => {
+                    console.error('Fehler:', error);
+                    alert('Fehler beim Senden der Nachricht!');
+                });
+        }
+
+
+
+
+        function ladeNachrichten() {
+            fetch('php/nachrichten.php')
+                .then(response => response.text())  // Antwort als Text zurückgeben
+                .then(responseText => {
+                    console.log('Antwort vom Server:', responseText);  // Gib die rohe Antwort aus
+
+                    try {
+                        const messages = JSON.parse(responseText);  // Versuche, die Antwort als JSON zu parsen
+                        let contentDiv = document.getElementById('content');
+                        contentDiv.innerHTML = '';
+
+                        messages.reverse().forEach(message => {
+                            let messageElement = document.createElement('div');
+                            messageElement.classList.add('message');
+
+                            let teilnehmerListe = message.eintragung ? `<p><strong>Teilnehmer:</strong> ${message.eintragung}</p>` : '<p><strong>Teilnehmer:</strong> Noch keine Teilnehmer</p>';
+
+                            if (message.wichtigkeit == 1) {
+                                messageElement.innerHTML = `<h1>${message.nachricht}</h1>`;
+                            } else if (message.wichtigkeit == 2) {
+                                messageElement.innerHTML = `
+                            <h2>${message.nachricht}
+                                <button id='${message.id}' class="teilnehmen-button">Ich bin dabei</button>
+                                <span style="font-size: small;">${teilnehmerListe}</span>
+                            </h2>
+                            
+                        `;
+                            } else if (message.wichtigkeit == 3) {
+                                messageElement.innerHTML = `<h3>${message.nachricht}</h3>`;
+                            } else {
+                                messageElement.innerHTML = `<p>${message.nachricht}</p>`;
+                            }
+                            contentDiv.appendChild(messageElement);
+                        });
+
+                        contentDiv.scrollTop = contentDiv.scrollHeight;
+                    } catch (error) {
+                        console.error('Fehler beim Parsen der Antwort:', error);
+                        alert('Fehler beim Abrufen der Nachrichten!');
+                    }
+                })
+                .catch(error => {
+                    console.error('Fehler beim Abrufen der Nachrichten:', error);
+                    alert('Fehler beim Abrufen der Nachrichten!');
+                });
+        }
+
+
+
+
+
+
+
+        // Beim Laden der Seite die Nachrichten abrufen
+        document.addEventListener("DOMContentLoaded", ladeNachrichten);
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const contentSection = document.getElementById('content');
+            if (contentSection) {
+                contentSection.scrollTop = contentSection.scrollHeight;
+            }
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let aktuellerEintragID = null;
+
+            document.getElementById('content').addEventListener('click', function (event) {
+                if (event.target.classList.contains('teilnehmen-button')) {
+                    aktuellerEintragID = event.target.id;
+                    document.getElementById('teilnehmen-popup').classList.add('show');
+                }
+            });
+
+            document.getElementById('teilnehmen-speichern').addEventListener('click', function () {
+                let teilnehmerName = document.getElementById('teilnehmer-name').value;
+
+                if (teilnehmerName.trim() === '') {
+                    alert('Bitte gib deinen Namen ein.');
+                    return;
+                }
+
+                fetch('php/nachrichten.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        id: aktuellerEintragID,
+                        teilnehmer: teilnehmerName
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('teilnehmen-popup').classList.remove('show');
+                            ladeNachrichten();  // Aktualisiert die Liste der Teilnehmer
+                        } else {
+                            alert('Fehler beim Eintragen!');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fehler:', error);
+                        alert('Fehler beim Senden der Teilnahme!');
+                    });
+            });
+
+            document.getElementById('teilnehmen-schliessen').addEventListener('click', function () {
+                document.getElementById('teilnehmen-popup').classList.remove('show');
+            });
+        });
+
+
+
+    </script>
+
+
 
     <!-- Toolbar -->
     <div id="menu-button">
@@ -86,6 +298,24 @@
 
             document.getElementById("toolbar").addEventListener("click", handleNavigation);
             document.getElementById("menu-dropdown").addEventListener("click", handleNavigation);
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let aktuellerEintragID = null;
+
+            document.getElementById('content').addEventListener('click', function (event) {
+                if (event.target.classList.contains('teilnehmen-button')) {
+                    aktuellerEintragID = event.target.id;
+                    document.getElementById('teilnehmen-popup').classList.add('show');
+                }
+            });
+
+            document.getElementById('teilnehmen-schliessen').addEventListener('click', function () {
+                document.getElementById('teilnehmen-popup').classList.remove('show');
+            });
+
+
         });
 
 

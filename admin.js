@@ -1,3 +1,4 @@
+//chat managment
 document.addEventListener("DOMContentLoaded", function () {
     // Popups steuern
     document.getElementById("openEventModal").addEventListener("click", function () {
@@ -51,3 +52,58 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("messagesPopup").classList.add("hidden");
     });
 });
+//chat managment
+
+
+
+//eventmanagment
+
+
+function eventanlage() {
+    // Hier nur den eigentlichen Nachrichtentext verwenden
+    let name = document.getElementById('Eventname').value;
+    let datum = document.getElementById('Eventdatum').value;
+    let uhrzeit = document.getElementById('Eventuhrzeit').value;
+    let beschreibung = document.getElementById('Eventbeschreibung').value;
+    let eintragung = document.getElementById('Eventeintragung').checked;
+
+
+
+    let wichtigkeit = 3; // Beispielwert für Wichtigkeit, anpassen falls nötig
+    if (eintragung) {
+        wichtigkeit = 2
+    } else {
+        wichtigkeit = 3
+    }
+
+
+    let ganznachricht = `📢 Neues Event angekündigt! 🎉 <br><br>\n\n🗓 Datum: ${datum}<br>\n⏰ Uhrzeit: ${uhrzeit}<br>\n📌 Event: ${name}<br>\n📝 Beschreibung: ${beschreibung}<br><br>\n\nSei dabei! 🚀`;
+
+    alert(ganznachricht)
+    // Hier den 'fetch'-Request in die Funktion einfügen, um die Nachricht zu senden
+
+
+
+    fetch('../php/nachrichten.php', {  // Gib hier den korrekten Pfad zu deinem PHP-Skript an
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            nachricht: ganznachricht,
+            wichtigkeit: wichtigkeit
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+            } else {
+                alert('Fehler beim Senden der Nachricht!');
+            }
+        })
+        .catch(error => {
+            console.error('Fehler:', error);
+            alert('Fehler beim Senden der Nachricht!');
+        });
+}
+//eventmanagment

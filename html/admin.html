@@ -26,12 +26,12 @@
             <div id="eventModal" class="modal hidden">
                 <div class="modal-content">
                     <h3>Neues Event anlegen</h3>
-                    <label>Datum:</label> <input type="date">
-                    <label>Uhrzeit:</label> <input type="time">
-                    <label>Name:</label> <input type="text">
-                    <label>Beschreibung:</label> <textarea></textarea>
-                    <label><input type="checkbox"> Eintragung durch Nutzer möglich</label>
-                    <button id="saveEvent">Speichern</button>
+                    <label>Datum:</label> <input id="Eventdatum" type="date">
+                    <label>Uhrzeit:</label> <input id="Eventuhrzeit" type="time">
+                    <label>Name:</label> <input id="Eventname" type="text">
+                    <label>Beschreibung:</label> <textarea id="Eventbeschreibung"></textarea>
+                    <label><input type="checkbox" id="Eventeintragung"> Eintragung durch Nutzer möglich</label>
+                    <button onclick="eventanlage()" id="saveEvent">Speichern</button>
                     <button id="closeEventModal">Schließen</button>
                 </div>
             </div>

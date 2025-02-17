@@ -1,6 +1,7 @@
 /* Allgemeine Stile */
 body {
-    background-color: #e3f2fd; /* Helleres Blau für eine sportliche, frische Atmosphäre */
+    background-color: #e3f2fd;
+    /* Helleres Blau für eine sportliche, frische Atmosphäre */
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -16,15 +17,19 @@ body {
 
 @media (max-width: 768px) {
     .head {
-        font-size: 24px; /* Kleinere Schriftgröße für Tablets */
-        padding: 10px; /* Weniger Padding für Tablets */
+        font-size: 24px;
+        /* Kleinere Schriftgröße für Tablets */
+        padding: 10px;
+        /* Weniger Padding für Tablets */
     }
 }
 
 @media (max-width: 480px) {
     .head {
-        font-size: 20px; /* Noch kleinere Schriftgröße für Handys */
-        padding: 8px; /* Noch weniger Padding */
+        font-size: 20px;
+        /* Noch kleinere Schriftgröße für Handys */
+        padding: 8px;
+        /* Noch weniger Padding */
     }
 }
 
@@ -33,9 +38,12 @@ body {
 #brett {
     width: 90%;
     max-width: 1000px;
-    min-height: 500px;  /* Mindesthöhe */
-    height: auto;  /* Höhe wächst mit dem Inhalt */
-    margin-top: 120px; /* Abstand nach unten, damit es nicht zu nah am Header ist */
+    min-height: 500px;
+    /* Mindesthöhe */
+    height: auto;
+    /* Höhe wächst mit dem Inhalt */
+    margin-top: 120px;
+    /* Abstand nach unten, damit es nicht zu nah am Header ist */
     background: #fff;
     padding: 30px;
     border-radius: 15px;
@@ -43,13 +51,16 @@ body {
     text-align: center;
     margin-bottom: 100px;
     color: #000;
-    
+    position: relative;
+
 }
 
 
 #brett-head h1 {
-    color: #000; /* Schwarze Schrift für die Kopfzeile */
-    font-size: 26px;  /* Etwas größere Schrift für den Titel */
+    color: #000;
+    /* Schwarze Schrift für die Kopfzeile */
+    font-size: 26px;
+    /* Etwas größere Schrift für den Titel */
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 3px;
@@ -60,36 +71,64 @@ body {
 #content {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Nachrichten nach links ausrichten */
-    width: 90%;
-    max-width: 600px; /* Begrenzte Breite für Chat-Stil */
+    align-items: flex-start;
+    width: 110%;
+    max-width: 800px;
+    max-height: 400px;
+    /* Feste Höhe setzen */
+    overflow-y: auto;
+    /* Scrollbar aktivieren */
+    padding-right: 10px;
+    /* Optional: Umrandung */
+    background-color: white;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+
 }
 
+#content::-webkit-scrollbar {
+    display: none;
+}
+
+
 /* Alle Nachrichten haben den gleichen Stil */
-#content h1, #content h2, #content h3 {
+#content h1,
+#content h2,
+#content h3 {
     padding: 15px;
-    border-radius: 10px; /* Abgerundete Ecken */
-    margin: 10px 0; /* Abstand zwischen Nachrichten */
-    background-color: white; /* Hintergrund auf Weiß setzen */
-    border: 2px solid rgba(0, 0, 0, 0.2); /* Leichter Rahmen */
-    width: fit-content; /* Breite richtet sich nach Inhalt */
-    max-width: 100%; /* Aber nicht über 100% der Eltern-Breite hinaus */
+    border-radius: 10px;
+    /* Abgerundete Ecken */
+    margin: 10px 0;
+    /* Abstand zwischen Nachrichten */
+    background-color: white;
+    /* Hintergrund auf Weiß setzen */
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    /* Leichter Rahmen */
+    width: fit-content;
+    /* Breite richtet sich nach Inhalt */
+    max-width: 100%;
+    /* Aber nicht über 100% der Eltern-Breite hinaus */
 }
 
 /* Unterschiedliche Farben für Wichtigkeit */
 #content h1 {
-    border-left: 6px solid rgb(134, 134, 134); /* Wichtigste Nachricht mit rotem Balken */
+    border-left: 6px solid rgb(134, 134, 134);
+    /* Wichtigste Nachricht mit rotem Balken */
     font-size: 24px;
 }
 
 #content h2 {
-    border-left: 6px solid #4169E1; /* Mittlere Wichtigkeit mit blauem Balken */
+    border-left: 6px solid #4169E1;
+    /* Mittlere Wichtigkeit mit blauem Balken */
     font-size: 24px;
-    position: relative; /* Position für Button */
+    position: relative;
+    /* Position für Button */
 }
 
 #content h3 {
-    border-left: 6px solid #50C878; /* Geringere Wichtigkeit mit lila Balken */
+    border-left: 6px solid #50C878;
+    /* Geringere Wichtigkeit mit lila Balken */
     font-size: 24px;
 }
 
@@ -101,7 +140,8 @@ body {
     font-size: 14px;
     font-weight: bold;
     color: white;
-    background: #4169E1; /* Sportliches Grün */
+    background: #4169E1;
+    /* Sportliches Grün */
     border: none;
     border-radius: 20px;
     cursor: pointer;
@@ -118,6 +158,263 @@ body {
 }
 
 
+/* Spieler-Suche Button im Schwarzen Brett */
+
+
+/* Popup Styling */
+
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-content label {
+    margin-top: 10px;
+}
+
+.popup-content input {
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#brett-absenden,
+#brett-schliessen {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#brett-absenden {
+    background-color: #50C878;
+    color: white;
+}
+
+#brett-absenden:hover {
+    background-color: #3ba966;
+}
+
+#brett-schliessen {
+    background-color: #ccc;
+}
+
+#brett-schliessen:hover {
+    background-color: #bbb;
+}
+
+/* Spieler-Suche Button (unten rechts im Schwarzen Brett) */
+#spieler-brett-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4169E1;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#spieler-brett-button:hover {
+    background-color: #285eff;
+    transform: scale(1.1);
+}
+
+/* Popup Styling */
+#spieler-brett-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 1000;
+}
+
+#spieler-brett-popup.hidden {
+    display: none;
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-content label {
+    margin-top: 10px;
+}
+
+.popup-content input {
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#brett-absenden,
+#brett-schliessen {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#brett-absenden {
+    background-color: #50C878;
+    color: white;
+}
+
+#brett-absenden:hover {
+    background-color: #3ba966;
+}
+
+#brett-schliessen {
+    background-color: #ccc;
+}
+
+#brett-schliessen:hover {
+    background-color: #bbb;
+}
+
+
+#spieler-suchen-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+#spieler-suchen-popup.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 350px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content h2 {
+    margin-bottom: 15px;
+}
+
+.popup-content input,
+.popup-content textarea {
+    width: 95%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.popup-content button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+#spieler-absenden {
+    background: #28a745;
+    color: white;
+}
+
+#spieler-schliessen {
+    background: #dc3545;
+    color: white;
+}
+
+button#open-popup {
+    position: absolute;
+    bottom: 20px;
+    /* Anpassen, um ihn weiter oben zu platzieren */
+    right: 20px;
+    /* Abstand vom rechten Rand */
+    background-color: #6ee141;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* Popup für die Namenseingabe */
+#teilnehmen-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#teilnehmen-popup.show {
+    display: flex;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content h2 {
+    margin-bottom: 10px;
+}
+
+.popup-content input {
+    width: 90%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.popup-content button {
+    background: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.popup-content button:hover {
+    background: #0056b3;
+}
 
 
 
@@ -125,17 +422,22 @@ body {
 
 @media (max-width: 768px) {
     #brett {
-        margin-top: 140px; /* Mehr Platz nach oben für Tablets */
-        width: 95%; /* Etwas breiter für kleinere Screens */
-        min-height: 250px; /* Kleinere Mindesthöhe */
+        margin-top: 140px;
+        /* Mehr Platz nach oben für Tablets */
+        width: 95%;
+        /* Etwas breiter für kleinere Screens */
+        min-height: 250px;
+        /* Kleinere Mindesthöhe */
     }
 }
 
 @media (max-width: 480px) {
     #brett {
-        margin-top: 160px; /* Noch mehr Platz für Smartphones */
+        margin-top: 160px;
+        /* Noch mehr Platz für Smartphones */
         width: 100%;
-        min-height: 200px; /* Kleinere Mindesthöhe für Handys */
+        min-height: 200px;
+        /* Kleinere Mindesthöhe für Handys */
         padding: 20px;
     }
 }
