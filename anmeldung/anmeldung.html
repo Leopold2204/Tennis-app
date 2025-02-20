@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>anmeldung</title>
+    <style>
+        /* Reset und Basis-Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #5fc589, #c2f38b);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            background: #fff;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #00C853, #B2FF59);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: #f7f7f7;
+            border-bottom: 1px solid #eee;
+        }
+
+        .header h2 {
+            color: #00C853;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #757575;
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #9e9e9e;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .tab.active {
+            color: #00C853;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #00C853;
+        }
+
+        .form-container {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #424242;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #00C853;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #00C853;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #00b342;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                margin: 10px;
+            }
+
+            .tabs .tab {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="header">
+            <h2>Willkommen!</h2>
+            <p>Login oder Registrieren</p>
+        </div>
+        <div class="tabs">
+            <div id="login-tab" class="tab active">Anmelden</div>
+            <div id="register-tab" class="tab">Registrieren</div>
+        </div>
+
+        <!-- Login-Formular -->
+        <div class="form-container" id="login-form">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" name="email" placeholder="Deine Email">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Passwort</label>
+                    <input type="password" id="login-password" name="password" placeholder="Dein Passwort">
+                </div>
+                <input type="hidden" name="action" value="login">
+                <button type="submit">Anmelden</button>
+            </form>
+        </div>
+
+        <!-- Registrierungsformular -->
+        <div class="form-container" id="register-form" style="display: none;">
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="register-name">Name</label>
+                    <input type="text" id="register-name" name="name" placeholder="Dein Name">
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" name="email" placeholder="Deine Email">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Passwort</label>
+                    <input type="password" id="register-password" name="password" placeholder="Dein Passwort">
+                </div>
+                <input type="hidden" name="action" value="register">
+                <button type="submit">Registrieren</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Umschalten zwischen Login- und Registrierungsformular
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.style.display = 'block';
+            loginForm.style.display = 'none';
+        });
+
+        // AJAX für Login
+        document.getElementById("registerForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            fetch("anmeldung.php", {
+                method: "POST",
+                body: formData
+            }).then(response => response.text())
+                .then(data => {
+                    if (data.trim() === "success") {
+                        alert("Registrierung erfolgreich!");
+                    } else {
+                        alert("Fehler: " + data); // Zeigt die genaue Fehlermeldung an
+                    }
+                });
+        });
+
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            fetch("anmeldung.php", {
+                method: "POST",
+                body: formData
+            }).then(response => response.text())
+                .then(data => {
+                    if (data.trim() === "success") {
+                        alert("Login erfolgreich!");
+                    } else {
+                        alert("Fehler: " + data);
+                    }
+                });
+        });
+    </script>
+
+</body>
+
+</html>
