@@ -127,10 +127,10 @@
             fetch('php/nachrichten.php')
                 .then(response => response.text())  // Antwort als Text zurückgeben
                 .then(responseText => {
-                    console.log('Antwort vom Server:', responseText);  // Gib die rohe Antwort aus
+                    console.log('Antwort vom Server:', responseText);  // Debugging-Zwecke
 
                     try {
-                        const messages = JSON.parse(responseText);  // Versuche, die Antwort als JSON zu parsen
+                        const messages = JSON.parse(responseText);  // JSON parsen
                         let contentDiv = document.getElementById('content');
                         contentDiv.innerHTML = '';
 
@@ -138,7 +138,8 @@
                             let messageElement = document.createElement('div');
                             messageElement.classList.add('message');
 
-                            let teilnehmerListe = message.eintragung ? `<p><strong>Teilnehmer:</strong> ${message.eintragung}</p>` : '<p><strong>Teilnehmer:</strong> Noch keine Teilnehmer</p>';
+                            // Teilnehmerliste verarbeiten
+                            let teilnehmerListe = message.eingtragung ? message.eingtragung.split(',').join(', ') : "Noch keine Teilnehmer";
 
                             if (message.wichtigkeit == 1) {
                                 messageElement.innerHTML = `<h1>${message.nachricht}</h1>`;
@@ -146,9 +147,9 @@
                                 messageElement.innerHTML = `
                             <h2>${message.nachricht}
                                 <button id='${message.id}' class="teilnehmen-button">Ich bin dabei</button>
-                                <span style="font-size: small;">${teilnehmerListe}</span>
+                                <br>
+                                <span style="font-size: small; color: gray;"><strong>Teilnehmer:</strong> ${teilnehmerListe}</span>
                             </h2>
-                            
                         `;
                             } else if (message.wichtigkeit == 3) {
                                 messageElement.innerHTML = `<h3>${message.nachricht}</h3>`;
@@ -169,6 +170,7 @@
                     alert('Fehler beim Abrufen der Nachrichten!');
                 });
         }
+
 
 
 

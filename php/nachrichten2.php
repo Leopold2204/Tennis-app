@@ -3,7 +3,6 @@ $host = 'localhost';  // MySQL-Host (normalerweise 'localhost')
 $dbname = 'tennis_app';
 $username = 'root';   // Dein MySQL-Benutzername
 $password = 'DevBenq1!';       // Dein MySQL-Passwort
-//$password = '#$Anneke1'; 
 
 // Verbindung zur MySQL-Datenbank herstellen
 $conn = new mysqli($host, $username, $password, $dbname);
@@ -15,28 +14,15 @@ if ($conn->connect_error) {
 // Prüfen, ob eine Nachricht gesendet wird
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Formulardaten erhalten
-    $nachricht = isset($_POST['nachricht']) ? $_POST['nachricht'] : null;
-    $wichtigkeit = isset($_POST['wichtigkeit']) ? $_POST['wichtigkeit'] : null;  // Wichtigkeit als Zahl (1, 2 oder 3)
+    $nachricht = $_POST['nachricht'];
+    $wichtigkeit = $_POST['wichtigkeit'];  // Wichtigkeit als Zahl (1, 2 oder 3)
     $ip_address = $_SERVER['REMOTE_ADDR'];
     $mac_address = isset($_SERVER['HTTP_X_MAC_ADDRESS']) ? $_SERVER['HTTP_X_MAC_ADDRESS'] : 'nicht verfügbar';
-    $id = isset($_POST['id']) ? $_POST['id'] : null;
-    $teilnehmer = isset($_POST['teilnehmer']) ? $_POST['teilnehmer'] : null;
-    $sql = '';
-    if (isset($id)) {
-        $sql = "UPDATE backbrett SET eingtragung = 
-        CASE 
-            WHEN eingtragung IS NULL OR eingtragung = '' THEN '$teilnehmer' 
-            ELSE CONCAT(eingtragung, ', ', '$teilnehmer') 
-        END 
-        WHERE id=$id";
 
-    } else {
-
-        // SQL-Statement zum Einfügen der Nachricht
-        $sql = "INSERT INTO backbrett (nachricht, wichtigkeit, ip_address, mac_address) 
+    // SQL-Statement zum Einfügen der Nachricht
+    $sql = "INSERT INTO backbrett (nachricht, wichtigkeit, ip_address, mac_address) 
             VALUES ('$nachricht', '$wichtigkeit', '$ip_address', '$mac_address')";
-    }
-    error_log($sql);
+
     if ($conn->query($sql) === TRUE) {
         echo json_encode(['success' => true]);
     } else {
@@ -44,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 } else {
     // Wenn eine GET-Anfrage kommt (z.B. zum Abrufen der Nachrichten)
-    $sql = "SELECT id, nachricht, wichtigkeit, eingtragung FROM backbrett ORDER BY timestamp DESC";
+    $sql = "SELECT nachricht, wichtigkeit FROM backbrett ORDER BY timestamp DESC";
     $result = $conn->query($sql);
 
     $messages = [];
