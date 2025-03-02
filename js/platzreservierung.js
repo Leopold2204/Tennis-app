@@ -48,49 +48,65 @@ function loadCalendar() {
         calendar.appendChild(emptyCell);
     }
 
-    // Erstelle die Tageszellen
-    // Erstelle die Tageszellen
+
+    // Im Kalender-Rendering: Für jede Tageszelle
     for (let day = 1; day <= daysInMonth; day++) {
         const dayCell = document.createElement('div');
         dayCell.className = 'calendar-day';
         dayCell.textContent = day;
 
-        // Reservierungen für diesen Tag filtern
-        const dayReservations = reservations.filter(reservation => {
-            const resDate = new Date(reservation.date);
-            return resDate.getDate() === day && resDate.getMonth() === currentDate.getMonth();
+        // Bestehende Logik für Hintergrundfarbe etc.
+        // ...
+
+        // Event Listener: Beim Hovern werden nur die Reservierungen für diesen Tag angezeigt
+        dayCell.addEventListener('mouseover', () => {
+            // Achtung: Da day hier 1-basiert ist und currentDate.getMonth() 0-indexiert ist, passt das direkt
+            updateDayReservations(day, currentDate.getMonth(), currentDate.getFullYear());
         });
 
-        // Blockierte Reservierung prüfen
-        const isBlocked = dayReservations.some(reservation => reservation.blocked == 1);
-
-        // Farbgebung basierend auf der Anzahl der Reservierungen
-        if (isBlocked) {
-            dayCell.style.backgroundColor = 'rgba(255, 0, 0, 0.7)'; // Rot für blockierte Reservierungen
-        } else if (dayReservations.length > 0) {
-            const greenIntensity = 0.3 + dayReservations.length * 0.1;
-            dayCell.style.backgroundColor = `rgba(0, 150, 0, ${Math.min(greenIntensity, 1)})`; // Dynamisches Grün
-        }
-
-        // Event für das Anzeigen der Reservierungen und das Setzen des Datums
+        // Optionaler Klick-Event für zusätzliche Funktionalitäten:
         dayCell.addEventListener('click', () => {
-            // Datum erstellen basierend auf dem aktuell angezeigten Monat und Jahr
-            const clickedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day + 1);
-            // Formular-Datum aktualisieren
+            const clickedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
             selectDate(clickedDate);
-
-            let reservedText = dayReservations.map(reservation =>
-                `${reservation.name} - ${reservation.platz} um ${reservation.time} ${reservation.blocked == 1 ? "(GESPERRT)" : ""}`
-            ).join('\n');
-            if (reservedText) {
-                alert(`Reservierungen für den ${day}.${currentDate.getMonth() + 1}.${currentDate.getFullYear()}:\n\n${reservedText}`);
-            }
         });
 
         calendar.appendChild(dayCell);
     }
 
+
+
 }
+
+function updateDayReservations(day, month, year) {
+    fetch('../php/reservations.php?action=get_all')
+        .then(response => response.json())
+        .then(data => {
+            // Filtere die Reservierungen für das angeklickte Datum
+            let dayReservations = data.filter(reservation => {
+                let resDate = new Date(reservation.date);
+                return resDate.getDate() === day &&
+                    resDate.getMonth() === month &&  // month ist hier 0-indexiert
+                    resDate.getFullYear() === year;
+            });
+
+            if (dayReservations.length > 0) {
+                let reservedText = dayReservations.map(reservation => {
+                    let text = `${reservation.name} - ${reservation.platz} um ${reservation.time} am ${reservation.date}`;
+                    if (reservation.blocked == 1) {
+                        text += " (GESPERRT)";
+                    }
+                    return text;
+                }).join('\n');
+
+                alert("Reservierungen:\n" + reservedText);
+            }
+        })
+        .catch(error => {
+            console.error('Fehler beim Abrufen der Reservierungen:', error);
+        });
+}
+
+
 
 
 

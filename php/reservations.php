@@ -137,6 +137,20 @@ if ($action === 'delete') {
     exit;
 }
 
+if ($action === 'get_all') {
+    $stmt = $conn->prepare("SELECT name, blocked, platz, date, time FROM reservations");
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $reservations = [];
+    while ($row = $result->fetch_assoc()) {
+        $reservations[] = $row;
+    }
+    echo json_encode($reservations);
+    exit;
+}
+
+
 
 // Falls eine unbekannte Aktion übergeben wird:
 echo json_encode(["error" => "Ungültige Aktion!"]);
