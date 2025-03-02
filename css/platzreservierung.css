@@ -138,8 +138,18 @@ select:focus {
 }
 
 #reservation-list-ul {
-    list-style: none;
-    padding: 0;
+    width: 100%;
+    /* Nutzt die volle Breite des Containers */
+    max-height: 100%;
+    /* Erhöhe die maximale Höhe */
+    min-height: 90%;
+    /* Mindesthöhe für eine größere Darstellung */
+    overflow-y: auto;
+    /* Scrollbar aktivieren, wenn nötig */
+    font-size: 16px;
+    /* Größere Schrift für bessere Lesbarkeit */
+    padding: 15px;
+    /* Mehr Innenabstand */
 }
 
 #reservation-list-ul li {

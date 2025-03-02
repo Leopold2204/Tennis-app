@@ -14,17 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-document.addEventListener('keydown', function (event) {
-    if (event.key === 'ö') {
-        openDateMenu();
-    }
-});
-
-function openDateMenu() {
-    // Hier das Popup oder Menü für die Datumsauswahl anzeigen
-    const menu = document.getElementById('date-selection-menu');
-    menu.style.display = 'block'; // Das Menü sichtbar machen
-}
 
 
 // Initialisiert den Kalender
@@ -35,11 +24,16 @@ function loadCalendar() {
     const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
     const daysInMonth = lastDay.getDate();
-    const firstDayIndex = firstDay.getDay();
+    let firstDayIndex = firstDay.getDay(); // 0 = Sonntag, 1 = Montag, ..., 6 = Samstag
+
+    // Korrigieren, damit Montag der erste Tag ist
+    firstDayIndex = (firstDayIndex === 0) ? 6 : firstDayIndex - 1;
+
     const calendar = document.getElementById('calendar');
     calendar.innerHTML = '';
 
-    const weekdays = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+    // Neue Reihenfolge: Montag zuerst
+    const weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
     weekdays.forEach(day => {
         const headerCell = document.createElement('div');
         headerCell.className = 'calendar-header';
@@ -54,6 +48,7 @@ function loadCalendar() {
         calendar.appendChild(emptyCell);
     }
 
+    // Erstelle die Tageszellen
     // Erstelle die Tageszellen
     for (let day = 1; day <= daysInMonth; day++) {
         const dayCell = document.createElement('div');
@@ -77,8 +72,13 @@ function loadCalendar() {
             dayCell.style.backgroundColor = `rgba(0, 150, 0, ${Math.min(greenIntensity, 1)})`; // Dynamisches Grün
         }
 
-        // Event für das Anzeigen der Reservierungen
+        // Event für das Anzeigen der Reservierungen und das Setzen des Datums
         dayCell.addEventListener('click', () => {
+            // Datum erstellen basierend auf dem aktuell angezeigten Monat und Jahr
+            const clickedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day + 1);
+            // Formular-Datum aktualisieren
+            selectDate(clickedDate);
+
             let reservedText = dayReservations.map(reservation =>
                 `${reservation.name} - ${reservation.platz} um ${reservation.time} ${reservation.blocked == 1 ? "(GESPERRT)" : ""}`
             ).join('\n');
@@ -89,7 +89,9 @@ function loadCalendar() {
 
         calendar.appendChild(dayCell);
     }
+
 }
+
 
 
 function selectDate(date) {
@@ -123,62 +125,82 @@ function addReservation() {
             else {
                 alert(data.success);
                 loadCalendar();
+                updateReservationList()
             }
+        });
+
+}
+
+
+
+
+
+
+function updateReservationList() {
+    const list = document.getElementById('reservation-list-ul');
+    list.innerHTML = '';
+
+    // AJAX-Request an die PHP-Datei senden
+    fetch('../php/reservations.php?action=get')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                list.innerHTML = '<li id="no-reservation-message">' + data.error + '</li>';
+                return;
+            }
+            console.log('Antwort vom Server:', data);
+
+            if (data.length === 0) {
+                list.innerHTML = '<li id="no-reservation-message">Noch keine Reservierungen.</li>';
+                return;
+            }
+
+            data.forEach((res, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `${res.date} - ${res.platz} um ${res.time}`;
+
+
+
+                listItem.innerHTML += ` <button onclick="deleteReservation(${res.id})">Löschen</button>`;
+                list.appendChild(listItem);
+            });
+        })
+        .catch(error => {
+            console.error('Fehler beim Abrufen der Reservierungen:', error);
+            list.innerHTML = '<li id="no-reservation-message">Fehler beim Laden.</li>';
+        });
+}
+
+function deleteReservation(id) {
+    if (!confirm("Möchtest du diese Reservierung wirklich löschen?")) {
+        return; // Abbrechen, wenn der Benutzer auf "Abbrechen" klickt
+    }
+
+    fetch("../php/reservations.php?action=delete", {
+        method: "POST",
+        body: new URLSearchParams({ id }),  // ID an den Server senden
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert(data.success);
+                updateReservationList(); // Liste nach dem Löschen aktualisieren
+                loadCalendar(); // Kalender ebenfalls aktualisieren
+            }
+        })
+        .catch(error => {
+            console.error("Fehler beim Löschen der Reservierung:", error);
         });
 }
 
 
 
 
-
-
-// Anzeige der Reservierungsliste
-function updateReservationList() {
-    const list = document.getElementById('reservation-list-ul');
-    list.innerHTML = '';
-
-    if (reservations.length === 0) {
-        list.innerHTML = '<li id="no-reservation-message">Noch keine Reservierungen.</li>';
-        return;
-    }
-
-    const userEmail = "test@example.com"; // Hier sollte die eingeloggte E-Mail stehen
-
-    reservations.forEach((res, index) => {
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `${res.date} - ${res.platz} um ${res.time} (Name: ${res.name}) 
-            ${res.blocked == 1 ? '<span style="color: red;">(GESPERRT)</span>' : ''}`;
-
-        // Falls es eine eigene Reservierung ist, kennzeichnen
-        if (res.user_email === userEmail) {
-            listItem.style.fontWeight = "bold";
-            listItem.innerHTML += ' <span style="color: blue;">(DEINE RESERVIERUNG)</span>';
-        }
-
-        listItem.innerHTML += ` <button onclick="deleteReservation(${index})">Löschen</button>`;
-        list.appendChild(listItem);
-    });
-}
-
-
-
 // Reservierung zum Kalender hinzufügen
-function addToCalendar(index) {
-    const reservation = reservationList[index];
-    const dayCell = document.querySelectorAll('.calendar-day');
 
-    for (let cell of dayCell) {
-        if (parseInt(cell.textContent) === reservation.date.getDate()) {
-            cell.classList.add('reserved');
-            const reservationText = cell.querySelector('.reservation-text');
-            reservationText.textContent = `🟢 ${reservation.name} - ${reservation.platz} um ${reservation.time}`;
-            reservations.push(reservation);
-            reservationList.splice(index, 1);
-            updateReservationList();
-            break;
-        }
-    }
-}
 
 // Monatswechsel (vor und zurück)
 function changeMonth(offset) {

@@ -20,7 +20,7 @@ if ($conn->connect_error) {
  * Falls du noch kein Login-System hast,
  * kannst du hier zum Testen eine Dummy-Session setzen:
  */
-// $_SESSION['user_email'] = "test@example.com";
+$_SESSION['user_email'] = "test@example.com";
 
 /*
  * Tabelle in deiner DB erstellen, falls noch nicht vorhanden:
@@ -44,23 +44,13 @@ if (!isset($_GET['action'])) {
 $action = $_GET['action'];
 
 // Hilfsfunktion: Überprüft, ob ein Nutzer eingeloggt ist
-function checkLogin()
-{
-    $user_email = isset($_POST['user_email']) ? $_POST['user_email'] : '';
-    if (!$user_email) {
-        echo json_encode(["error" => "Kein Nutzer angegeben!"]);
-        exit;
-    }
-    return $user_email;
-}
 
 
 // Aktion: Reservierung hinzufügen
 if ($action === 'add') {
     $user_email = 'test';  // Holt den per POST gesendeten Wert
-    checkLogin();
 
-    $user_email = isset($_POST['user_email']) ? $_POST['user_email'] : '';
+    $user_email = isset($_POST['user_email']) ? $_POST['user_email'] : 'test@example.com';
     $date = isset($_POST['date']) ? $_POST['date'] : '';
     $platz = isset($_POST['platz']) ? $_POST['platz'] : '';
     $time = isset($_POST['time']) ? $_POST['time'] : '';
@@ -95,44 +85,58 @@ if ($action === 'add') {
 
 // Aktion: Reservierungen abrufen
 if ($action === 'get') {
-    $user_email = isset($_SESSION['user_email']) ? $_SESSION['user_email'] : '';
+    if (!isset($_SESSION['user_email'])) {
+        echo json_encode(["error" => "Nicht eingeloggt."]);
+        exit;
+    }
 
-    $query = "SELECT * FROM reservations";
-    $result = $conn->query($query);
+    $user_email = $_SESSION['user_email'];
+
+    $stmt = $conn->prepare("SELECT * FROM reservations WHERE user_email = ?");
+    $stmt->bind_param("s", $user_email);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     $reservations = [];
     while ($row = $result->fetch_assoc()) {
-        // Markiere, ob die Reservierung zum eingeloggten Nutzer gehört
-        $row["own"] = ($row["user_email"] === $user_email);
         $reservations[] = $row;
     }
     echo json_encode($reservations);
     exit;
 }
 
+
 // Aktion: Reservierung löschen (nur eigene Reservierungen)
 if ($action === 'delete') {
-    checkLogin();
-
-    $user_email = isset($_POST['user_email']) ? $_POST['user_email'] : '';
-    $id = isset($_POST['id']) ? $_POST['id'] : '';
-
-    if (!$id) {
+    if (!isset($_POST['id'])) {
         echo json_encode(["error" => "Keine ID angegeben."]);
         exit;
     }
 
-    $stmt = $conn->prepare("DELETE FROM reservations WHERE id = ? AND user_email = ?");
-    $stmt->bind_param("is", $id, $user_email);
-    $stmt->execute();
+    $id = intval($_POST['id']); // ID in eine Zahl umwandeln
 
-    if ($stmt->affected_rows > 0) {
-        echo json_encode(["success" => "Reservierung gelöscht!"]);
+    // Überprüfen, ob die Reservierung existiert
+    $stmt = $conn->prepare("SELECT * FROM reservations WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        echo json_encode(["error" => "Reservierung nicht gefunden."]);
+        exit;
+    }
+
+    // Reservierung löschen
+    $stmt = $conn->prepare("DELETE FROM reservations WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    if ($stmt->execute()) {
+        echo json_encode(["success" => "Reservierung erfolgreich gelöscht!"]);
     } else {
-        echo json_encode(["error" => "Löschen nicht erlaubt oder Reservierung nicht gefunden."]);
+        echo json_encode(["error" => "Fehler beim Löschen der Reservierung."]);
     }
     exit;
 }
+
 
 // Falls eine unbekannte Aktion übergeben wird:
 echo json_encode(["error" => "Ungültige Aktion!"]);
