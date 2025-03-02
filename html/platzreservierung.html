@@ -96,6 +96,16 @@
         <br><br><br><br><br>
     </div>
 
+    <!-- Modal für die Reservierungsanzeige -->
+    <div id="reservationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Reservierungen am <span id="modalDate"></span></h3>
+            <ul id="modalReservationList"></ul>
+        </div>
+    </div>
+
+
     <script>
 
 
@@ -125,9 +135,9 @@
         });
 
         // JavaScript für das Menü
-      // document.getElementById("menu-button").addEventListener("click", function () {
-      //     document.getElementById("menu-dropdown").classList.toggle("hidden");
-      // });
+        // document.getElementById("menu-button").addEventListener("click", function () {
+        //     document.getElementById("menu-dropdown").classList.toggle("hidden");
+        // });
     </script>
 
     <script src="..\js\platzreservierung.js"></script>

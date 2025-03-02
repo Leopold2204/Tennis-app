@@ -14,6 +14,20 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+// Schließ-Button
+document.querySelector(".close").addEventListener("click", () => {
+    document.getElementById("reservationModal").style.display = "none";
+});
+
+// Modal schließt sich, wenn außerhalb des Inhalts geklickt wird
+window.addEventListener("click", (event) => {
+    const modal = document.getElementById("reservationModal");
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+});
+
+
 
 
 // Initialisiert den Kalender
@@ -48,23 +62,39 @@ function loadCalendar() {
         calendar.appendChild(emptyCell);
     }
 
-
-    // Im Kalender-Rendering: Für jede Tageszelle
+    // Erstelle die Tageszellen
     for (let day = 1; day <= daysInMonth; day++) {
         const dayCell = document.createElement('div');
         dayCell.className = 'calendar-day';
         dayCell.textContent = day;
 
-        // Bestehende Logik für Hintergrundfarbe etc.
-        // ...
+        // Reservierungen für diesen Tag filtern
+        const dayReservations = reservations.filter(reservation => {
+            const resDate = new Date(reservation.date);
+            return resDate.getDate() === day && resDate.getMonth() === currentDate.getMonth();
+        });
 
-        // Event Listener: Beim Hovern werden nur die Reservierungen für diesen Tag angezeigt
+        // Wenn Reservierungen vorhanden sind, passe die Hintergrundfarbe an:
+        if (dayReservations.length > 0) {
+            // Prüfe, ob mindestens eine Reservierung blockiert ist
+            if (dayReservations.some(reservation => reservation.blocked == 1)) {
+                dayCell.style.backgroundColor = 'rgba(255, 0, 0, 0.7)'; // Rot für blockierte Reservierungen
+            } else {
+                // Dynamisches Grün, abhängig von der Anzahl der Reservierungen
+                const greenIntensity = 0.3 + dayReservations.length * 0.1;
+                dayCell.style.backgroundColor = `rgba(0, 150, 0, ${Math.min(greenIntensity, 1)})`;
+            }
+        } else {
+            // Kein Eintrag: Standardhintergrund
+            dayCell.style.backgroundColor = '#f0f0f0';
+        }
+
+        // Beim Hovern das Modal mit den Reservierungen anzeigen (siehe vorherige Implementierung)
         dayCell.addEventListener('mouseover', () => {
-            // Achtung: Da day hier 1-basiert ist und currentDate.getMonth() 0-indexiert ist, passt das direkt
             updateDayReservations(day, currentDate.getMonth(), currentDate.getFullYear());
         });
 
-        // Optionaler Klick-Event für zusätzliche Funktionalitäten:
+        // Optional: Beim Klicken wird das Datum ausgewählt
         dayCell.addEventListener('click', () => {
             const clickedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
             selectDate(clickedDate);
@@ -72,39 +102,52 @@ function loadCalendar() {
 
         calendar.appendChild(dayCell);
     }
-
-
-
 }
+
 
 function updateDayReservations(day, month, year) {
     fetch('../php/reservations.php?action=get_all')
         .then(response => response.json())
         .then(data => {
-            // Filtere die Reservierungen für das angeklickte Datum
+            // Filtere die Reservierungen für das angegebene Datum
             let dayReservations = data.filter(reservation => {
                 let resDate = new Date(reservation.date);
                 return resDate.getDate() === day &&
-                    resDate.getMonth() === month &&  // month ist hier 0-indexiert
+                    resDate.getMonth() === month && // 0-indexiert
                     resDate.getFullYear() === year;
             });
 
-            if (dayReservations.length > 0) {
-                let reservedText = dayReservations.map(reservation => {
-                    let text = `${reservation.name} - ${reservation.platz} um ${reservation.time} am ${reservation.date}`;
-                    if (reservation.blocked == 1) {
-                        text += " (GESPERRT)";
-                    }
-                    return text;
-                }).join('\n');
+            // Setze das Datum im Modal
+            const modalDate = document.getElementById("modalDate");
+            modalDate.textContent = `${day}.${month + 1}.${year}`;
 
-                alert("Reservierungen:\n" + reservedText);
+            // Fülle die Liste im Modal
+            const modalList = document.getElementById("modalReservationList");
+            modalList.innerHTML = "";
+            if (dayReservations.length > 0) {
+                dayReservations.forEach(reservation => {
+                    const li = document.createElement("li");
+                    li.textContent = `${reservation.name} – ${reservation.platz} um ${reservation.time}`;
+                    // Falls blockiert, visuell hervorheben
+                    if (reservation) {
+                        dayCell.style.backgroundColor = 'rgba(255, 0, 0, 0.7)';
+                    }
+                    modalList.appendChild(li);
+                });
+            } else {
+                const li = document.createElement("li");
+                li.textContent = "Keine Reservierungen für diesen Tag.";
+                modalList.appendChild(li);
             }
+
+            // Öffne das Modal
+            document.getElementById("reservationModal").style.display = "block";
         })
         .catch(error => {
             console.error('Fehler beim Abrufen der Reservierungen:', error);
         });
 }
+
 
 
 
