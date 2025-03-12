@@ -97,18 +97,23 @@
 
         <!-- Platzreservierung -->
         <section class="admin-section">
-            <h2>Platzreservierung</h2>
+            <h2>Platzsperrung</h2>
             <button id="openPlatzModal">Platz reservieren</button>
             <div id="platzModal" class="modal hidden">
                 <div class="modal-content">
-                    <h3>Platz reservieren</h3>
-                    <label>Platz sperren:</label> <input type="checkbox">
-                    <label>Platz reservieren:</label> <input type="checkbox">
-                    <label>Uhrzeit:</label> <input type="time">
-                    <label>Datum:</label> <input type="date">
-                    <label>Tag:</label> <input type="text">
-                    <label>Begründung:</label> <textarea></textarea>
-                    <button id="savePlatz">Speichern</button>
+                    <h3>Platz sperren</h3>
+                    <label>Uhrzeit:</label> <input id="platz-time" type="time">
+                    <label>Datum:</label> <input id="platz-date" type="date">
+                    <label>Plazt</label> <select id="platz-platz">
+                        <option value="Platz 1">Platz 1</option>
+                        <option value="Platz 2">Platz 2</option>
+                        <option value="Platz 3">Platz 3</option>
+                        <option value="Platz 4">Platz 4</option>
+                        <option value="Platz 5">Platz 5</option>
+                        <option value="Platz 6">Platz 6</option>
+                    </select> <br>
+                    <label>Name:</label> <input id="platz-name" type="text">
+                    <button onclick="addadminReservation()" id="savePlatz">Speichern</button>
                     <button id="closePlatzModal">Schließen</button>
                 </div>
             </div>
@@ -201,7 +206,7 @@
         });
 
         // Nachrichten anzeigen
-        
+
 
         document.getElementById("closeMessagesPopup").addEventListener("click", function () {
             document.getElementById("messagesPopup").classList.add("hidden");

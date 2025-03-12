@@ -107,3 +107,38 @@ function eventanlage() {
         });
 }
 //eventmanagment
+
+
+
+
+//reservierungen
+
+function addadminReservation() {
+    const date = document.getElementById('platz-date').value;
+    const platz = document.getElementById('platz-platz').value;
+    const time = document.getElementById('platz-time').value;
+    const name = document.getElementById('platz-name').value;
+    const blocked = "1"; // Immer auf 1 setzen
+
+    if (!date || !name || !time) {
+        alert("Bitte alle Felder ausfüllen!");
+        return;
+    }
+
+    fetch("../php/reservations.php?action=add", {
+        method: "POST",
+        body: new URLSearchParams({ date, platz, time, name, blocked }), // blocked hinzugefügt
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) alert(data.error);
+            else {
+                alert(data.success);
+                loadCalendar();
+                updateReservationList();
+            }
+        });
+}
+
+//reservierungen

@@ -95,11 +95,12 @@ function loadCalendar() {
     }
 }
 
+let modalTimeout; // Variable für verzögertes Schließen
+
 function updateDayReservations(day, month, year, cellElement) {
     fetch('../php/reservations.php?action=get_all')
         .then(response => response.json())
         .then(data => {
-            // Filtere die Reservierungen für das angegebene Datum
             let dayReservations = data.filter(reservation => {
                 let resDate = new Date(reservation.date);
                 return resDate.getDate() === day &&
@@ -107,13 +108,13 @@ function updateDayReservations(day, month, year, cellElement) {
                     resDate.getFullYear() === year;
             });
 
-            // Aktualisiere den Text im Modal
+            const modal = document.getElementById("reservationModal");
             const modalDate = document.getElementById("modalDate");
-            modalDate.textContent = `${day}.${month + 1}.${year}`;
-
-            // Fülle die Liste im Modal
             const modalList = document.getElementById("modalReservationList");
+
+            modalDate.textContent = `${day}.${month + 1}.${year}`;
             modalList.innerHTML = "";
+
             if (dayReservations.length > 0) {
                 dayReservations.forEach(reservation => {
                     const li = document.createElement("li");
@@ -126,19 +127,38 @@ function updateDayReservations(day, month, year, cellElement) {
                 modalList.appendChild(li);
             }
 
-            // Positioniere das Modal knapp über der Zelle
-            const modal = document.getElementById("reservationModal");
-            modal.style.position = "absolute";
-            const rect = cellElement.getBoundingClientRect();
-            // Berechne die Position: oben relativ zur Zelle (mit 5px Abstand)
-            modal.style.top = (window.scrollY + rect.top - modal.offsetHeight - 5) + "px";
-            modal.style.left = (window.scrollX + rect.left) + "px";
-            modal.style.display = "block";
+            modal.style.display = "block"; // Erst jetzt sichtbar machen
+
+            // Nutze `requestAnimationFrame`, um sicherzustellen, dass das Modal korrekt positioniert wird
+            requestAnimationFrame(() => {
+                const rect = cellElement.getBoundingClientRect();
+                const modalHeight = modal.offsetHeight;
+
+                modal.style.position = "absolute";
+                modal.style.top = `${window.scrollY + rect.top - modalHeight - 10}px`;
+                modal.style.left = `${window.scrollX + rect.left}px`;
+            });
         })
         .catch(error => {
             console.error('Fehler beim Abrufen der Reservierungen:', error);
         });
 }
+
+
+// Verzögertes Schließen des Modals
+function closeModal() {
+    modalTimeout = setTimeout(() => {
+        document.getElementById("reservationModal").style.display = "none";
+    }, 200); // 200ms Verzögerung, um Flackern zu verhindern
+}
+
+// Event-Handling für das Modal
+document.getElementById("reservationModal").addEventListener("mouseenter", () => {
+    clearTimeout(modalTimeout); // Falls das Modal unterbrochen wird, nicht schließen
+});
+
+document.getElementById("reservationModal").addEventListener("mouseleave", closeModal);
+
 
 
 
