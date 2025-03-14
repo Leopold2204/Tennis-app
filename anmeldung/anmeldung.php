@@ -84,7 +84,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             echo "Benutzer nicht gefunden.";
         }
         $stmt->close();
+    } elseif ($action === "auto") {
+        $email = trim($_POST['email']);
+        $password = trim($_POST['password']);
+
+        if (empty($email) || empty($password)) {
+            echo "Bitte alle Felder ausfüllen.";
+            exit;
+        }
+
+        // Benutzer anhand der E-Mail suchen und Name, Passwort sowie Rolle abrufen
+        $stmt = $conn->prepare("SELECT name, password, rolle FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $stmt->bind_result($name, $db_password, $rolle);
+            $stmt->fetch();
+
+            // Passwort mit password_verify() überprüfen
+            // Einfacher Passwortvergleich
+            if ($password == $db_password) {
+                echo json_encode(["status" => "success", "name" => $name, "rolle" => $rolle]);
+            } else {
+                echo "Falsches Passwort.";
+            }
+
+        } else {
+            echo "Benutzer nicht gefunden.";
+        }
+        $stmt->close();
     }
+
 
 
 }

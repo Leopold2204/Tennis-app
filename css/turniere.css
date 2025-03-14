@@ -160,3 +160,33 @@ input {
     }
 }
 
+/* Banner-Styling */
+.banner-overlay {
+    position: fixed; /* Fixiert das Banner über der gesamten Seite */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Deckt die gesamte Bildschirmbreite ab */
+    height: 100vh; /* Deckt die gesamte Bildschirmhöhe ab */
+    background-color: rgba(0, 0, 0, 0.815); /* Dunkler Hintergrund mit Transparenz */
+    color: white; /* Textfarbe */
+    display: flex;
+    justify-content: center; /* Zentriert den Inhalt horizontal */
+    align-items: center; /* Zentriert den Inhalt vertikal */
+    z-index: 9999; /* Stellt sicher, dass das Banner über allem liegt */
+}
+
+.banner-content {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8); /* Ein etwas dunklerer Hintergrund für den Text */
+    border-radius: 10px;
+}
+
+.banner-overlay h1 {
+    margin: 0;
+    font-size: 3em;
+}
+
+.banner-overlay p {
+    font-size: 1.5em;
+}

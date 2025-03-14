@@ -127,7 +127,6 @@
             fetch('php/nachrichten.php')
                 .then(response => response.text())  // Antwort als Text zurückgeben
                 .then(responseText => {
-                    console.log('Antwort vom Server:', responseText);  // Debugging-Zwecke
 
                     try {
                         const messages = JSON.parse(responseText);  // JSON parsen
@@ -319,6 +318,93 @@
 
 
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const roleimstorage = localStorage.getItem("Rolle");
+            const adminElement = document.querySelector('#toolbar #Admin');
+
+            // Überprüfen, ob das Admin-Element gefunden wird
+            if (adminElement) {
+                console.log('Admin-Element gefunden:', adminElement);
+            } else {
+                console.log('Admin-Element wurde nicht gefunden.');
+            }
+
+            if (roleimstorage !== '1') {
+                adminElement.style.display = 'none';  // Falls es gefunden wurde
+
+            } else {
+                adminElement.style.display = 'block';  // Falls es gefunden wurde
+
+            }
+        });
+
+
+
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Prüfen, ob der Code bereits in der Session gespeichert ist
+            if (sessionStorage.getItem("authCode")) {
+                console.log("Authentifizierung bereits bestätigt.");
+                return;
+            }
+
+            // Daten aus dem Local Storage abrufen
+            const storedEmail = localStorage.getItem("Email");
+            const storedPassword = localStorage.getItem("Passwort"); // Falls "Angemeldet bleiben" aktiviert wurde
+            const storedRole = localStorage.getItem("Rolle");
+
+            // Falls keine Daten vorhanden sind, zur Anmeldung weiterleiten
+            if (!storedEmail || !storedPassword) {
+                console.log("Keine gespeicherten Anmeldeinformationen gefunden.");
+                window.location.href = "anmeldung/anmeldung.html";
+                return;
+            }
+
+            // Server-Anfrage zur Überprüfung der Anmeldedaten
+            fetch("anmeldung/anmeldung.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams({
+                    action: "auto",
+                    email: storedEmail,
+                    password: storedPassword || "",
+                }),
+            })
+                .then(response => response.text())  // Hier auf .text() ändern
+                .then(text => {
+                    console.log("Server-Antwort:", text);  // Debugging-Ausgabe
+
+                    let data;
+                    try {
+                        data = JSON.parse(text);  // Versuchen, die Antwort zu parsen
+                    } catch (e) {
+                        console.error("Fehler beim Parsen der Antwort:", e); // Fehlerausgabe
+                        alert("Fehler beim Parsen der Antwort: " + e);
+                        return;
+                    }
+
+                    if (data.status === "success") {
+                        console.log("Benutzer erfolgreich authentifiziert.");
+                        sessionStorage.setItem("authCode", "verified");
+                    } else {
+                        console.log("Ungültige Anmeldeinformationen, Weiterleitung zur Anmeldung.");
+                        localStorage.clear();
+                        window.location.href = "anmeldung/anmeldung.html";
+                    }
+                })
+                .catch(error => {
+                    console.error("Fehler bei der Authentifizierung:", error);
+                    window.location.href = "anmeldung/anmeldung.html";
+                });
+
+        });
+
+
 
 
     </script>
