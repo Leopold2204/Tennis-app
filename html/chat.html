@@ -139,6 +139,26 @@
 
     });
 
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const roleimstorage = localStorage.getItem("Rolle");
+        const adminElement = document.querySelector('#toolbar #Admin');
+
+        // Überprüfen, ob das Admin-Element gefunden wird
+        if (adminElement) {
+            console.log('Admin-Element gefunden:', adminElement);
+        } else {
+            console.log('Admin-Element wurde nicht gefunden.');
+        }
+
+        if (roleimstorage !== '1') {
+            adminElement.style.display = 'none';  // Falls es gefunden wurde
+
+        } else {
+            adminElement.style.display = 'block';  // Falls es gefunden wurde
+
+        }
+    });
 </script>
 
 <body>
