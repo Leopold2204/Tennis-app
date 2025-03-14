@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
-        
+
         if ($stmt->num_rows > 0) {
             echo "Diese E-Mail wird bereits verwendet.";
             exit;
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         // Neuen Benutzer einfügen
         $stmt = $conn->prepare("INSERT INTO users (name, email, password, rolle) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssss", $name, $email, $password, $rolle);
-        
+
         if ($stmt->execute()) {
             echo "success";
         } else {
@@ -64,19 +64,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             exit;
         }
 
-        // Benutzer anhand der E-Mail suchen
-        $stmt = $conn->prepare("SELECT password FROM users WHERE email = ?");
+        // Benutzer anhand der E-Mail suchen und Name, Passwort sowie Rolle abrufen
+        $stmt = $conn->prepare("SELECT name, password, rolle FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
 
         if ($stmt->num_rows > 0) {
-            $stmt->bind_result($db_password);
+            $stmt->bind_result($name, $db_password, $rolle);
             $stmt->fetch();
 
             // Direkter Vergleich, da Passwort unverschlüsselt gespeichert ist
             if ($password === $db_password) {
-                echo "success";
+                echo json_encode(["status" => "success", "name" => $name, "rolle" => $rolle]);
             } else {
                 echo "Falsches Passwort.";
             }
@@ -85,6 +85,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         }
         $stmt->close();
     }
+
+
 }
 
 $conn->close();

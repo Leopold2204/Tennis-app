@@ -157,6 +157,13 @@
                 padding: 12px;
             }
         }
+
+        .nobr {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* Abstand zwischen Label und Checkbox */
+        }
     </style>
 </head>
 
@@ -183,6 +190,12 @@
                     <label for="login-password">Passwort</label>
                     <input type="password" id="login-password" name="password" placeholder="Dein Passwort">
                 </div>
+
+                <div class="form-group nobr">
+                    <label for="eingelogt_bleiben">Angemeldet bleiben</label>
+                    <input type="checkbox" id="eingelogt_bleiben" name="eingelogt">
+                </div>
+
                 <input type="hidden" name="action" value="login">
                 <button type="submit">Anmelden</button>
             </form>
@@ -203,6 +216,9 @@
                     <label for="register-password">Passwort</label>
                     <input type="password" id="register-password" name="password" placeholder="Dein Passwort">
                 </div>
+                <p>wenn sie sich registreren simmen sie den <a href="">AGBs</a> zu</p>
+                <br>
+
                 <input type="hidden" name="action" value="register">
                 <button type="submit">Registrieren</button>
             </form>
@@ -240,7 +256,10 @@
             }).then(response => response.text())
                 .then(data => {
                     if (data.trim() === "success") {
-                        alert("Registrierung erfolgreich!");
+                        loginTab.classList.add('active');
+                        registerTab.classList.remove('active');
+                        loginForm.style.display = 'block';
+                        registerForm.style.display = 'none';
                     } else {
                         alert("Fehler: " + data); // Zeigt die genaue Fehlermeldung an
                     }
@@ -250,18 +269,33 @@
         document.getElementById("loginForm").addEventListener("submit", function (e) {
             e.preventDefault();
             let formData = new FormData(this);
+
             fetch("anmeldung.php", {
                 method: "POST",
                 body: formData
-            }).then(response => response.text())
+            })
+                .then(response => response.json()) // JSON-Daten erwarten
                 .then(data => {
-                    if (data.trim() === "success") {
-                        alert("Login erfolgreich!");
+                    if (data.status === "success") {
+                        localStorage.setItem("Email", document.getElementById('login-email').value);
+                        localStorage.setItem("name", data.name);  // Speichert den Namen
+                        localStorage.setItem("Rolle", data.rolle); // Speichert die Rolle
+
+                        if (document.getElementById("eingelogt_bleiben").checked) {
+                            localStorage.setItem("Passwort", document.getElementById('login-password').value);
+                        }
+
+                        window.location.href = '../index.html';
                     } else {
                         alert("Fehler: " + data);
                     }
                 });
         });
+
+
+
+
+
     </script>
 
 </body>
