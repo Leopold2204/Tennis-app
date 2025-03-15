@@ -208,3 +208,62 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 //spelplan
+
+//mintglieder liste
+
+// Mitglieder anzeigen
+function loadMembers() {
+
+    fetch('../php/mitglieder.php', {
+        method: 'GET',
+    })
+        .then(response => response.json())
+        .then(data => {
+            const memberListPopup = document.getElementById("memberListPopup");
+            memberListPopup.innerHTML = ''; // Clear current list
+
+            if (data.length === 0) {
+                memberListPopup.innerHTML = 'Keine Mitglieder gefunden.';
+            } else {
+                data.forEach(member => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `${member.name} (${member.email}) <button class="deleteMember" data-id="${member.id}">Löschen</button>`;
+                    memberListPopup.appendChild(li);
+                });
+
+                // Event-Listener zum Löschen eines Mitglieds hinzufügen
+                const deleteButtons = document.querySelectorAll('.deleteMember');
+                deleteButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const memberId = this.getAttribute('data-id');
+
+                        // Bestätigung, bevor gelöscht wird
+                        const confirmDelete = confirm("Möchten Sie dieses Mitglied wirklich löschen?");
+                        if (confirmDelete) {
+                            // Löschen des Mitglieds per POST-Anfrage
+                            fetch('../php/mitglieder.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded'
+                                },
+                                body: new URLSearchParams({ id: memberId })
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    alert(data.message); // Erfolg oder Fehler anzeigen
+                                    if (data.status === 'success') {
+                                        this.parentElement.remove(); // Löschen des Mitglieds aus der Liste im UI
+                                    }
+                                })
+                                .catch(error => console.error('Fehler:', error));
+                        }
+                    });
+                });
+            }
+        })
+        .catch(error => console.error('Fehler:', error));
+}
+
+
+
+//mintglieder liste
