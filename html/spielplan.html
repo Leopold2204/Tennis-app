@@ -21,9 +21,25 @@
 
     <div id="window-container">
         <div id="window">
-            <iframe src="https://www.btv.de/de/turniere/nordbayerische-meisterschaften-.html" frameborder="0"></iframe>
+            <iframe id="dynamic-iframe" src="" frameborder="0"></iframe>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("../php/iframe_link.php?get")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.link) {
+                        document.getElementById("dynamic-iframe").src = data.link;
+                    } else {
+                        console.error("Fehler beim Abrufen des Links:", data.error);
+                    }
+                })
+                .catch(error => console.error("Fetch-Fehler:", error));
+        });
+    </script>
+
 
 
 

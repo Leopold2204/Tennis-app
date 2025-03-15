@@ -142,3 +142,69 @@ function addadminReservation() {
 }
 
 //reservierungen
+
+
+//spielplan
+document.addEventListener("DOMContentLoaded", function () {
+    const spielplanInput = document.getElementById("spielplanLink");
+    const saveButton = document.getElementById("saveSpielplan");
+
+    // Aktuellen Link aus der Datenbank abrufen
+    fetch("../php/iframe_link.php?get")
+        .then(response => response.text()) // Erst als Text lesen
+        .then(text => {
+            try {
+                return JSON.parse(text); // Falls gültiges JSON, parse es
+            } catch (error) {
+                console.error("Fehlerhafte JSON-Antwort:", text);
+                throw new Error("Ungültige JSON-Antwort");
+            }
+        })
+        .then(data => {
+            if (data.link) {
+                document.getElementById("spielplanLink").value = data.link;
+            }
+        })
+        .catch(error => console.error("Fehler beim Abrufen des Links:", error));
+
+
+    // Link speichern
+    saveButton.addEventListener("click", function () {
+        const newLink = spielplanInput.value;
+
+        // Sicherstellen, dass der neue Link eine gültige URL ist
+        if (!newLink || !isValidURL(newLink)) {
+            alert("Bitte geben Sie eine gültige URL ein.");
+            return;
+        }
+
+        // Link an den Server senden
+        fetch("../php/iframe_link.php?set", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ link: newLink }), // Senden des neuen Links als JSON
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Link erfolgreich gespeichert!");
+                } else if (data.error) {
+                    alert("Fehler: " + data.error);
+                }
+            })
+            .catch(error => {
+                console.error("Fehler beim Speichern des Links:", error);
+                alert("Ein Fehler ist beim Speichern des Links aufgetreten.");
+            });
+    });
+
+    // Funktion zur Überprüfung der URL
+    function isValidURL(url) {
+        const regex = /^(ftp|http|https):\/\/[^ "]+$/;
+        return regex.test(url);
+    }
+});
+
+//spelplan
