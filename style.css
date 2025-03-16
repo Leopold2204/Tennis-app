@@ -1,5 +1,4 @@
-
-body{
+body {
     font-family: Arial, sans-serif;
 }
 
@@ -14,7 +13,8 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(135deg, #388e3c, #66bb6a); /* Grüner Verlauf für Sportlichkeit */
+    background: linear-gradient(135deg, #388e3c, #66bb6a);
+    /* Grüner Verlauf für Sportlichkeit */
     padding: 12px 20px;
     border-radius: 25px;
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
@@ -96,20 +96,30 @@ body{
 }
 
 .head {
-    position: fixed; /* Fixiert den Header oben */
-    top: 0; /* Setzt den Header ganz oben */
+    position: fixed;
+    /* Fixiert den Header oben */
+    top: 0;
+    /* Setzt den Header ganz oben */
     left: 0;
-    width: 100%; /* Header soll die gesamte Breite einnehmen */
-    color: #fff; /* Weißer Text für gute Lesbarkeit */
-    background: linear-gradient(135deg, #2e7d32, #66bb6a); /* Grüner Verlauf für sportlichen Look */
+    width: 100%;
+    /* Header soll die gesamte Breite einnehmen */
+    color: #fff;
+    /* Weißer Text für gute Lesbarkeit */
+    background: linear-gradient(135deg, #2e7d32, #66bb6a);
+    /* Grüner Verlauf für sportlichen Look */
     padding: 15px;
     font-size: 28px;
     text-align: center;
-    text-transform: uppercase; /* Großbuchstaben für einen dynamischen Look */
-    letter-spacing: 3px; /* Etwas mehr Abstand zwischen den Buchstaben */
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Schlagschatten für Tiefe */
-    margin: 0; /* Entfernt Standardabstände */
-    z-index: 10; /* Stellt sicher, dass der Header über anderem Inhalt liegt */
+    text-transform: uppercase;
+    /* Großbuchstaben für einen dynamischen Look */
+    letter-spacing: 3px;
+    /* Etwas mehr Abstand zwischen den Buchstaben */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+    /* Schlagschatten für Tiefe */
+    margin: 0;
+    /* Entfernt Standardabstände */
+    z-index: 10;
+    /* Stellt sicher, dass der Header über anderem Inhalt liegt */
 }
 
 /* Menü-Button */
@@ -200,6 +210,22 @@ body{
     transform: scale(1.05);
 }
 
+@media (max-width: 600px) {
+    #toolbar div span:last-child {
+        font-size: 12px;
+        /* Nur den Text verkleinern */
+    }
+}
+
+@media (max-width: 400px) {
+    #toolbar div span:last-child {
+        font-size: 10px;    
+        /* Noch kleinerer Text */
+    }
+}
+
+
+ 
 /* Responsiveness */
 @media (max-width: 300px) {
     #toolbar {
@@ -215,4 +241,3 @@ body{
 .hidden {
     display: none !important;
 }
-

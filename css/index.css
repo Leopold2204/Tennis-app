@@ -10,28 +10,31 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    width: 99%;
 }
+
+
 
 /* Kopfbereich */
 
 
-@media (max-width: 768px) {
+/*@media (max-width: 768px) {
     .head {
         font-size: 24px;
-        /* Kleinere Schriftgröße für Tablets */
+        /* Kleinere Schriftgröße für Tablets 
         padding: 10px;
-        /* Weniger Padding für Tablets */
+        /* Weniger Padding für Tablets 
     }
 }
 
 @media (max-width: 480px) {
     .head {
         font-size: 20px;
-        /* Noch kleinere Schriftgröße für Handys */
+        /* Noch kleinere Schriftgröße für Handys 
         padding: 8px;
-        /* Noch weniger Padding */
+        /* Noch weniger Padding 
     }
-}
+} */
 
 
 
@@ -421,24 +424,24 @@ button#open-popup {
 
 
 
-@media (max-width: 768px) {
+/*@media (max-width: 768px) {
     #brett {
         margin-top: 140px;
-        /* Mehr Platz nach oben für Tablets */
+        /* Mehr Platz nach oben für Tablets 
         width: 95%;
-        /* Etwas breiter für kleinere Screens */
+        /* Etwas breiter für kleinere Screens 
         min-height: 250px;
-        /* Kleinere Mindesthöhe */
+        /* Kleinere Mindesthöhe 
     }
 }
 
 @media (max-width: 480px) {
     #brett {
         margin-top: 160px;
-        /* Noch mehr Platz für Smartphones */
+        /* Noch mehr Platz für Smartphones 
         width: 100%;
         min-height: 200px;
-        /* Kleinere Mindesthöhe für Handys */
+        /* Kleinere Mindesthöhe für Handys 
         padding: 20px;
     }
-}
+}*/
