@@ -1,9 +1,9 @@
 <?php
 // Verbindung zur MySQL-Datenbank herstellen (ohne Passwortverschlüsselung)
-$host = "localhost";
-$user = "root";    // Deinen MySQL-Benutzer anpassen
-$pass = "DevBenq1!";        // Dein MySQL-Passwort anpassen
-$dbname = "tennis_app";
+$host = "database-5017492070.webspace-host.com";
+$user = "dbu311785";    // Deinen MySQL-Benutzer anpassen
+$pass = "DevBenq1!t";        // Dein MySQL-Passwort anpassen
+$dbname = "dbs14025551";
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 

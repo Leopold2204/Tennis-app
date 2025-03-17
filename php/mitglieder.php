@@ -1,12 +1,11 @@
 <?php
-// Datenbankverbindung
-$servername = "localhost";
-$username = "root";
-$password = "DevBenq1!";
-$dbname = "tennis_app"; // Ersetze dies mit deinem tatsächlichen Datenbanknamen
+// Verbindung zur MySQL-Datenbank herstellen (ohne Passwortverschlüsselung)
+$host = "database-5017492070.webspace-host.com";
+$user = "dbu311785";    // Deinen MySQL-Benutzer anpassen
+$pass = "DevBenq1!t";        // Dein MySQL-Passwort anpassen
+$dbname = "dbs14025551";
 
-// Verbindung herstellen
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($host, $user, $pass, $dbname);
 
 // Verbindungsprüfung
 if ($conn->connect_error) {

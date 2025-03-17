@@ -1,13 +1,13 @@
 <?php
 header("Content-Type: application/json");
 
-// Datenbankverbindung (nur einmal!)
-$servername = "localhost";
-$username = "root";
-$password = "DevBenq1!";
-$dbname = "tennis_app";
+// Verbindung zur MySQL-Datenbank herstellen (ohne Passwortverschlüsselung)
+$host = "database-5017492070.webspace-host.com";
+$user = "dbu311785";    // Deinen MySQL-Benutzer anpassen
+$pass = "DevBenq1!t";        // Dein MySQL-Passwort anpassen
+$dbname = "dbs14025551";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($host, $user, $pass, $dbname);
 if ($conn->connect_error) {
     die(json_encode(["error" => "Verbindung fehlgeschlagen: " . $conn->connect_error]));
 }
