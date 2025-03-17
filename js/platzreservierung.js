@@ -221,17 +221,15 @@ function updateReservationList() {
     list.innerHTML = '';
 
     // E-Mail aus localStorage abrufen
-    const userEmail = localStorage.getItem("Email");  // Stelle sicher, dass die E-Mail im LocalStorage gesetzt ist
-
+    const userEmail = localStorage.getItem("Email");
     if (!userEmail) {
         alert("Benutzer ist nicht eingeloggt.");
         return;
     }
 
-    // AJAX-Request an den Server senden, um die Reservierungen des Benutzers zu erhalten
     fetch('../php/reservations.php?action=get', {
         method: "POST",
-        body: new URLSearchParams({ user_email: userEmail }),  // E-Mail hier hinzufügen
+        body: new URLSearchParams({ user_email: userEmail }),
         headers: { "Content-Type": "application/x-www-form-urlencoded" }
     })
         .then(response => response.json())
@@ -242,15 +240,25 @@ function updateReservationList() {
             }
             console.log('Antwort vom Server:', data);
 
-            if (data.length === 0) {
+            // Heutiges Datum ohne Zeitanteil
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Filter: Nur Reservierungen, deren Datum heute oder in der Zukunft liegt
+            const upcomingReservations = data.filter((res) => {
+                let resDate = new Date(res.date);
+                resDate.setHours(0, 0, 0, 0);
+                return resDate >= today;
+            });
+
+            if (upcomingReservations.length === 0) {
                 list.innerHTML = '<li id="no-reservation-message">Noch keine Reservierungen.</li>';
                 return;
             }
 
-            data.forEach((res, index) => {
+            upcomingReservations.forEach((res) => {
                 const listItem = document.createElement('li');
                 listItem.innerHTML = `${res.date} - ${res.platz} um ${res.time}`;
-
                 listItem.innerHTML += ` <button onclick="deleteReservation(${res.id})">Löschen</button>`;
                 list.appendChild(listItem);
             });
@@ -260,6 +268,7 @@ function updateReservationList() {
             list.innerHTML = '<li id="no-reservation-message">Fehler beim Laden.</li>';
         });
 }
+
 
 
 function deleteReservation(id) {

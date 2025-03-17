@@ -14,27 +14,12 @@ body {
 }
 
 
-
+.head{
+    font-size: 110% !important;
+}
 /* Kopfbereich */
 
 
-/*@media (max-width: 768px) {
-    .head {
-        font-size: 24px;
-        /* Kleinere Schriftgröße für Tablets 
-        padding: 10px;
-        /* Weniger Padding für Tablets 
-    }
-}
-
-@media (max-width: 480px) {
-    .head {
-        font-size: 20px;
-        /* Noch kleinere Schriftgröße für Handys 
-        padding: 8px;
-        /* Noch weniger Padding 
-    }
-} */
 
 
 
@@ -422,26 +407,61 @@ button#open-popup {
 
 
 
+/* Media Query für kleinere Geräte (z. B. Tablets & Smartphones) */
+@media (max-width: 768px) {
+    body {
+        width: 100%;
+        padding: 10px;
+    }
 
-
-/*@media (max-width: 768px) {
+    /* Das Brett wird schmaler und erhält weniger Abstand */
     #brett {
-        margin-top: 140px;
-        /* Mehr Platz nach oben für Tablets 
         width: 95%;
-        /* Etwas breiter für kleinere Screens 
-        min-height: 250px;
-        /* Kleinere Mindesthöhe 
+        max-width: 99%;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        padding: 15px;
+    }
+
+    /* Kopfzeile etwas kleiner */
+    #brett-head h1 {
+        font-size: 20px;
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+    }
+
+    /* Inhalt anpassen: kleinere Nachrichtenboxen */
+    #content {
+        max-width: 100%;
+        max-height: 450px;
+        padding-right: 5px;
+    }
+
+    /* Schriftgröße und Abstände der Nachrichten reduzieren */
+    #content h1,
+    #content h2,
+    #content h3 {
+        font-size: 18px;
+        padding: 10px;
+        margin: 8px 0;
+    }
+
+    /* Button-Größen anpassen */
+    .teilnehmen-button {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    /* Button unten rechts im Brett verkleinern */
+    #spieler-brett-button {
+        font-size: 20px;
+        padding: 8px;
+        bottom: 15px;
+        right: 15px;
+    }
+
+    /* Popup-Inhalte schlanker machen */
+    .popup-content {
+        width: 90%;
     }
 }
-
-@media (max-width: 480px) {
-    #brett {
-        margin-top: 160px;
-        /* Noch mehr Platz für Smartphones 
-        width: 100%;
-        min-height: 200px;
-        /* Kleinere Mindesthöhe für Handys 
-        padding: 20px;
-    }
-}*/

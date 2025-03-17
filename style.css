@@ -177,6 +177,8 @@ body {
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
+    z-index: 1000;
+    /* Stellt sicher, dass die Toolbar immer über anderen Elementen liegt */
     max-width: 700px;
     display: flex;
     justify-content: space-between;
@@ -219,13 +221,13 @@ body {
 
 @media (max-width: 400px) {
     #toolbar div span:last-child {
-        font-size: 10px;    
+        font-size: 10px;
         /* Noch kleinerer Text */
     }
 }
 
 
- 
+
 /* Responsiveness */
 @media (max-width: 300px) {
     #toolbar {
