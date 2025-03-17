@@ -20,7 +20,6 @@ if ($conn->connect_error) {
  * Falls du noch kein Login-System hast,
  * kannst du hier zum Testen eine Dummy-Session setzen:
  */
-$_SESSION['user_email'] = "test@example.com";
 
 /*
  * Tabelle in deiner DB erstellen, falls noch nicht vorhanden:
@@ -47,17 +46,18 @@ $action = $_GET['action'];
 
 
 // Aktion: Reservierung hinzufügen
+// Aktion: Reservierung hinzufügen
 if ($action === 'add') {
-    $user_email = 'test';  // Holt den per POST gesendeten Wert
+    // E-Mail aus dem POST-Daten abrufen
+    $user_email = isset($_POST['user_email']) ? $_POST['user_email'] : 'test@example.com';  // Hier die E-Mail aus POST
 
-    $user_email = isset($_POST['user_email']) ? $_POST['user_email'] : 'test@example.com';
     $date = isset($_POST['date']) ? $_POST['date'] : '';
     $platz = isset($_POST['platz']) ? $_POST['platz'] : '';
     $time = isset($_POST['time']) ? $_POST['time'] : '';
     $name = isset($_POST['name']) ? $_POST['name'] : '';
     $blocked = isset($_POST['blocked']) ? 1 : 0; // Falls Checkbox für Sperrung gesetzt
 
-    if (!$date || !$platz || !$time || !$name) {
+    if (!$date || !$platz || !$time || !$name || !$user_email) {
         echo json_encode(["error" => "Bitte alle Felder ausfüllen!"]);
         exit;
     }
@@ -83,15 +83,19 @@ if ($action === 'add') {
     exit;
 }
 
+
+// Aktion: Reservierungen abrufen
 // Aktion: Reservierungen abrufen
 if ($action === 'get') {
-    if (!isset($_SESSION['user_email'])) {
-        echo json_encode(["error" => "Nicht eingeloggt."]);
+    // E-Mail aus den POST-Daten abrufen
+    if (!isset($_POST['user_email'])) {
+        echo json_encode(["error" => "Benutzer nicht eingeloggt."]);
         exit;
     }
 
-    $user_email = $_SESSION['user_email'];
+    $user_email = $_POST['user_email'];  // Benutzer-E-Mail aus POST
 
+    // Reservierungen des Benutzers abrufen
     $stmt = $conn->prepare("SELECT * FROM reservations WHERE user_email = ?");
     $stmt->bind_param("s", $user_email);
     $stmt->execute();
@@ -104,6 +108,7 @@ if ($action === 'get') {
     echo json_encode($reservations);
     exit;
 }
+
 
 
 // Aktion: Reservierung löschen (nur eigene Reservierungen)

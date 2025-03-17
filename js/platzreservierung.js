@@ -181,14 +181,22 @@ function addReservation() {
     const time = document.getElementById('time').value;
     const name = document.getElementById('name').value;
 
-    if (!date || !name || !time) {
+    // E-Mail aus localStorage abrufen
+    const userEmail = localStorage.getItem("Email");  // Stelle sicher, dass die E-Mail im LocalStorage gesetzt ist
+    if (!date || !name || !time || !userEmail) {
         alert("Bitte alle Felder ausfüllen!");
         return;
     }
 
     fetch("../php/reservations.php?action=add", {
         method: "POST",
-        body: new URLSearchParams({ date, platz, time, name }),
+        body: new URLSearchParams({
+            date,
+            platz,
+            time,
+            name,
+            user_email: userEmail // E-Mail hier hinzufügen
+        }),
         headers: { "Content-Type": "application/x-www-form-urlencoded" }
     })
         .then(response => response.json())
@@ -197,11 +205,11 @@ function addReservation() {
             else {
                 alert(data.success);
                 loadCalendar();
-                updateReservationList()
+                updateReservationList();
             }
         });
-
 }
+
 
 
 
@@ -212,8 +220,20 @@ function updateReservationList() {
     const list = document.getElementById('reservation-list-ul');
     list.innerHTML = '';
 
-    // AJAX-Request an die PHP-Datei senden
-    fetch('../php/reservations.php?action=get')
+    // E-Mail aus localStorage abrufen
+    const userEmail = localStorage.getItem("Email");  // Stelle sicher, dass die E-Mail im LocalStorage gesetzt ist
+
+    if (!userEmail) {
+        alert("Benutzer ist nicht eingeloggt.");
+        return;
+    }
+
+    // AJAX-Request an den Server senden, um die Reservierungen des Benutzers zu erhalten
+    fetch('../php/reservations.php?action=get', {
+        method: "POST",
+        body: new URLSearchParams({ user_email: userEmail }),  // E-Mail hier hinzufügen
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    })
         .then(response => response.json())
         .then(data => {
             if (data.error) {
@@ -231,8 +251,6 @@ function updateReservationList() {
                 const listItem = document.createElement('li');
                 listItem.innerHTML = `${res.date} - ${res.platz} um ${res.time}`;
 
-
-
                 listItem.innerHTML += ` <button onclick="deleteReservation(${res.id})">Löschen</button>`;
                 list.appendChild(listItem);
             });
@@ -242,6 +260,7 @@ function updateReservationList() {
             list.innerHTML = '<li id="no-reservation-message">Fehler beim Laden.</li>';
         });
 }
+
 
 function deleteReservation(id) {
     if (!confirm("Möchtest du diese Reservierung wirklich löschen?")) {
