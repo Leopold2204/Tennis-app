@@ -293,11 +293,10 @@ select:focus {
 /* Angepasstes Modal (Tooltip-Stil) */
 .modal {
     display: none;
-    z-index: 1000;
-    background-color: #fefefe;
-    padding: 10px;
+
+    background-color: #00000000;
+    padding: 0;
     border-radius: 8px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
     /* Entferne die volle Breite und Höhe */
     /* Optional: weitere Anpassungen, z.B. max-width */
 }
@@ -306,7 +305,7 @@ select:focus {
 /* Modal-Inhalt */
 .modal-content {
     background-color: #fefefe;
-    margin: 10% auto;
+    margin: 0;
     padding: 20px;
     border-radius: 8px;
     width: 80%;

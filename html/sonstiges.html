@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Sonstiges</title>
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" href="../style.css">
@@ -19,7 +19,10 @@
         justify-content: center;
         gap: 15px;
         margin-top: 20px;
+        flex-wrap: wrap;
+        /* Hinzugefügt, um den Umbruch der Buttons zu ermöglichen */
     }
+
 
     .custom-button {
         background-color: #4CAF50;
@@ -49,11 +52,7 @@
         <a href="https://www.tcleerstetten.de/" class="custom-button" target="_blank">Shop</a>
     </div>
 
-    <script>
-        document.getElementById("menu-button").addEventListener("click", function () {
-            document.getElementById("menu-dropdown").classList.toggle("hidden");
-        });
-    </script>
+
 
     <!-- Menü-Button für kleine Bildschirme -->
     <div id="menu-button">

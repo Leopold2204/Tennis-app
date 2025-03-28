@@ -135,7 +135,7 @@ function updateDayReservations(day, month, year, cellElement) {
                 const modalHeight = modal.offsetHeight;
 
                 modal.style.position = "absolute";
-                modal.style.top = `${window.scrollY + rect.top - modalHeight - 10}px`;
+                modal.style.top = `${window.scrollY + rect.top - modalHeight}px`;
                 modal.style.left = `${window.scrollX + rect.left}px`;
             });
         })

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Schwarzes Brett</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="style.css">
@@ -42,8 +42,11 @@
             <label for="spieler-name">Dein Name:</label>
             <input type="text" id="spieler-name" placeholder="Max Mustermann">
 
+            <label for="spieler-name">Für welchen tag suchst du?</label>
+            <input type="date" id="spieler-date" placeholder="15.07.2021">
+
             <label for="spieler-telefon">Telefon (optional):</label>
-            <input type="tel" id="spieler-telefon" placeholder="0123 456789">
+            <input type="" id="spieler-telefon" placeholder="0123 456789">
 
             <label for="spieler-email">E-Mail (optional):</label>
             <input type="email" id="spieler-email" placeholder="max@beispiel.de">
@@ -84,18 +87,68 @@
             }
         });
         function spilersuche() {
-            // Hier nur den eigentlichen Nachrichtentext verwenden
-            let name = document.getElementById('spieler-name').value;
-            let telefon = document.getElementById('spieler-telefon').value;
-            let email = document.getElementById('spieler-email').value;
-            let nachricht = document.getElementById('spieler-nachricht').value;
+            // Eingabefelder abrufen & Leerzeichen entfernen
+            let name = document.getElementById('spieler-name').value.trim();
+            let email = document.getElementById('spieler-email').value.trim();
+            let telefon = document.getElementById('spieler-telefon').value.trim();
+            let nachricht = document.getElementById('spieler-nachricht').value.trim();
+            let date = document.getElementById('spieler-date').value.trim();
 
-            let ganznachricht = name + ' (' + email + ') ' + ' (' + telefon + ') ' + 'sucht einen spieler. Er möchte noch sagen: ' + nachricht;
+            // Reguläre Ausdrücke (RegEx) zur Überprüfung
+            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Einfache E-Mail-Validierung
+            let telefonRegex = /^[0-9+\-\s()]{6,20}$/; // Erlaubt nur Zahlen, -, +, () und mind. 6 Zeichen
+            let dateRegex = /^\d{4}-\d{2}-\d{2}$/; // Datum im Format YYYY-MM-DD
+            let maxTextLength = 500; // Maximal 500 Zeichen für Nachricht
 
-            // Hier den 'fetch'-Request in die Funktion einfügen, um die Nachricht zu senden
-            let wichtigkeit = 1; // Beispielwert für Wichtigkeit, anpassen falls nötig
+            // Validierung: Prüfen, ob alle Felder ausgefüllt sind
+            if (!name || !email || !telefon || !nachricht || !date) {
+                alert('Bitte füllen Sie alle Felder aus!');
+                return;
+            }
 
-            fetch('php/nachrichten.php', {  // Gib hier den korrekten Pfad zu deinem PHP-Skript an
+            // Validierung: E-Mail prüfen
+            if (!emailRegex.test(email)) {
+                alert('Bitte geben Sie eine gültige E-Mail-Adresse ein!');
+                return;
+            }
+
+            // Validierung: Telefonnummer prüfen
+            if (!telefonRegex.test(telefon)) {
+                alert('Bitte geben Sie eine gültige Telefonnummer ein!');
+                return;
+            }
+
+            // Validierung: Datum prüfen
+            if (!dateRegex.test(date)) {
+                alert('Bitte geben Sie ein gültiges Datum ein (Format: YYYY-MM-DD)!');
+                return;
+            }
+
+            // Validierung: Nachricht auf zu viele Zeichen prüfen
+            if (nachricht.length > maxTextLength) {
+                alert('Die Nachricht ist zu lang (max. 500 Zeichen)!');
+                return;
+            }
+
+            // Sicherheitsfilter: HTML-Tags und gefährliche Zeichen entfernen
+            function sanitizeInput(input) {
+                return input.replace(/</g, "&lt;").replace(/>/g, "&gt;"); // HTML-Tags entschärfen
+            }
+
+            name = sanitizeInput(name);
+            email = sanitizeInput(email);
+            telefon = sanitizeInput(telefon);
+            nachricht = sanitizeInput(nachricht);
+            date = sanitizeInput(date);
+
+            // Nachricht schön formulieren
+            let ganznachricht = `${name} sucht für den ${date} einen Mitspieler. Nachricht: "${nachricht}". Kontakt: ${email}, Tel.: ${telefon}.`;
+
+            // Wichtigkeit (Beispielwert)
+            let wichtigkeit = 1;
+
+            // Nachricht senden
+            fetch('php/nachrichten.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -109,7 +162,14 @@
                 .then(data => {
                     if (data.success) {
                         document.getElementById('spieler-suchen-popup').classList.remove('show');
-                        ladeNachrichten();  // Nachrichten neu laden, um die aktuelle Nachricht anzuzeigen
+                        ladeNachrichten();  // Nachrichten neu laden
+
+                        // Eingabefelder leeren
+                        document.getElementById('spieler-name').value = '';
+                        document.getElementById('spieler-email').value = '';
+                        document.getElementById('spieler-telefon').value = '';
+                        document.getElementById('spieler-nachricht').value = '';
+                        document.getElementById('spieler-date').value = '';
                     } else {
                         alert('Fehler beim Senden der Nachricht!');
                     }
@@ -119,6 +179,11 @@
                     alert('Fehler beim Senden der Nachricht!');
                 });
         }
+
+
+
+
+
 
 
 
@@ -161,12 +226,12 @@
                         contentDiv.scrollTop = contentDiv.scrollHeight;
                     } catch (error) {
                         console.error('Fehler beim Parsen der Antwort:', error);
-                        alert('Fehler beim Abrufen der Nachrichten!');
+                        // alert('Fehler beim Abrufen der Nachrichten!');
                     }
                 })
                 .catch(error => {
                     console.error('Fehler beim Abrufen der Nachrichten:', error);
-                    alert('Fehler beim Abrufen der Nachrichten!');
+                    // alert('Fehler beim Abrufen der Nachrichten!');
                 });
         }
 
@@ -391,6 +456,7 @@
                     if (data.status === "success") {
                         console.log("Benutzer erfolgreich authentifiziert.");
                         sessionStorage.setItem("authCode", "verified");
+                        ladeNachrichten()   
                     } else {
                         console.log("Ungültige Anmeldeinformationen, Weiterleitung zur Anmeldung.");
                         localStorage.clear();
