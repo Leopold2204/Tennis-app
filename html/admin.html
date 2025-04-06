@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <script src="../admin.js"></script>
+    <script src="../js/admin.js"></script>
 
     <!-- Admin Navigation -->
     <header class="admin-header">
@@ -122,7 +122,58 @@
                 </div>
             </div>
         </section>
+
+        <section class="admin-section">
+            <h2>Wiederkehrende Platzsperrung</h2>
+            <button id="openWiederPlatzModal">Wiederkehrend reservieren</button>
+            <div id="wiederplatzModal" class="modal hidden">
+                <div class="modal-content">
+                    <h3>Platz sperren (wiederkehrend)</h3>
+
+                    <label>Startdatum:</label>
+                    <input id="wieder-start-date" type="date">
+
+                    <label>Enddatum:</label>
+                    <input id="wieder-end-date" type="date">
+
+                    <label>Wochentag:</label>
+                    <select id="wieder-wochentag">
+                        <option value="1">Montag</option>
+                        <option value="2">Dienstag</option>
+                        <option value="3">Mittwoch</option>
+                        <option value="4">Donnerstag</option>
+                        <option value="5">Freitag</option>
+                        <option value="6">Samstag</option>
+                        <option value="0">Sonntag</option>
+                    </select>
+
+                    <label>Uhrzeit:</label>
+                    <input id="wieder-time" type="time">
+
+                    <label>Platz:</label>
+                    <select id="wieder-platz">
+                        <option value="Platz 1">Platz 1</option>
+                        <option value="Platz 2">Platz 2</option>
+                        <option value="Platz 3">Platz 3</option>
+                        <option value="Platz 4">Platz 4</option>
+                        <option value="Platz 5">Platz 5</option>
+                        <option value="Platz 6">Platz 6</option>
+                    </select>
+
+                    <label>Name:</label>
+                    <input id="wieder-name" type="text">
+
+                    <button onclick="addWiederReser()" id="saveWiederPlatz">Speichern</button>
+                    <button id="closeWiederPlatzModal">Schließen</button>
+                </div>
+            </div>
+        </section>
+
+
     </div>
+
+
+
     <br><br><br><br><br><br>
 
     <!-- Menü-Button für kleine Bildschirme -->
@@ -182,6 +233,14 @@
         document.getElementById("closePlatzModal").addEventListener("click", function () {
             document.getElementById("platzModal").classList.add("hidden");
         });
+        // Wiederkehrendes Platz-Modal öffnen & schließen
+        document.getElementById("openWiederPlatzModal").addEventListener("click", function () {
+            document.getElementById("wiederplatzModal").classList.remove("hidden");
+        });
+        document.getElementById("closeWiederPlatzModal").addEventListener("click", function () {
+            document.getElementById("wiederplatzModal").classList.add("hidden");
+        });
+
 
         // Mitglieder anzeigen
         document.getElementById("loadMembers").addEventListener("click", function () {
@@ -216,6 +275,8 @@
         document.getElementById("closeMessagesPopup").addEventListener("click", function () {
             document.getElementById("messagesPopup").classList.add("hidden");
         });
+
+
     </script>
 
     <script>

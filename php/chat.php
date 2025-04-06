@@ -20,8 +20,8 @@ $action = $_GET['action'] ?? '';
 switch ($action) {
     case "save":
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $name = $_POST["name"] ?? "";
-            $message = $_POST["message"] ?? "";
+            $name = htmlspecialchars(trim($_POST["name"] ?? ""), ENT_QUOTES, 'UTF-8');
+            $message = htmlspecialchars(trim($_POST["message"] ?? ""), ENT_QUOTES, 'UTF-8');
 
             if (!empty($name) && !empty($message)) {
                 $stmt = $conn->prepare("INSERT INTO messages (name, message) VALUES (?, ?)");
@@ -38,6 +38,7 @@ switch ($action) {
             }
         }
         break;
+
 
     case "fetch":
         $sql = "SELECT id, name, message, time FROM messages ORDER BY time DESC";

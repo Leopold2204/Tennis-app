@@ -144,6 +144,63 @@ function addadminReservation() {
 //reservierungen
 
 
+//weidrekehrende reservierungen
+
+
+function addWiederReser() {
+    const startDate = new Date(document.getElementById('wieder-start-date').value);
+    const endDate = new Date(document.getElementById('wieder-end-date').value);
+    const weekday = parseInt(document.getElementById('wieder-wochentag').value);
+    const time = document.getElementById('wieder-time').value;
+    const platz = document.getElementById('wieder-platz').value;
+    const name = document.getElementById('wieder-name').value;
+    const blocked = "1";
+
+    if (isNaN(startDate) || isNaN(endDate) || !time || !name) {
+        alert("Bitte alle Felder ausfüllen!");
+        return;
+    }
+
+    const reservations = [];
+    const current = new Date(startDate);
+
+    while (current <= endDate) {
+        if (current.getDay() === weekday) {
+            const dateStr = current.toISOString().split('T')[0];
+            reservations.push({ date: dateStr, time, platz, name, blocked });
+        }
+        current.setDate(current.getDate() + 1);
+    }
+
+    if (reservations.length === 0) {
+        alert("Keine passenden Termine im Zeitraum gefunden.");
+        return;
+    }
+
+    const promises = reservations.map(r => {
+        return fetch("../php/reservations.php?action=add", {
+            method: "POST",
+            body: new URLSearchParams(r),
+            headers: { "Content-Type": "application/x-www-form-urlencoded" }
+        }).then(res => res.json());
+    });
+
+    Promise.all(promises).then(results => {
+        const errors = results.filter(r => r.error);
+        if (errors.length > 0) {
+            alert(`Einige Reservierungen sind fehlgeschlagen: ${errors.map(e => e.error).join(", ")}`);
+        } else {
+            alert("Alle wiederkehrenden Reservierungen wurden erfolgreich gespeichert.");
+        }
+        loadCalendar?.();
+        updateReservationList?.();
+    });
+}
+
+
+//weidrekehrende reservierungen
+
+
 //spielplan
 document.addEventListener("DOMContentLoaded", function () {
     const spielplanInput = document.getElementById("spielplanLink");

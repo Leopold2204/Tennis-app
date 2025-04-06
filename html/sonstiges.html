@@ -50,6 +50,7 @@
         <a href="../Impressum_Datenschutz.pdf" class="custom-button" download>Impressum / Datenschutzerklärung</a>
         <a onclick="abmelden()" class="custom-button">Abmelden</a>
         <a href="https://www.tcleerstetten.de/" class="custom-button" target="_blank">Shop</a>
+        <a onclick="install()"></a>
     </div>
 
 
@@ -82,6 +83,23 @@
     </div>
 
     <script>
+
+        function install(){
+                if (installPromptEvent) {
+                    installPromptEvent.prompt(); // Installationsaufforderung anzeigen
+                    installPromptEvent.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === "accepted") {
+                            console.log("App wurde installiert");
+                            localStorage.setItem("app_installed", "true");
+                        }
+                        installPromptEvent = null;
+                        installBanner.classList.add("hidden");
+                    });
+                } else if (isIosSafari()) {
+                    alert("Füge diese Seite zum Home-Bildschirm hinzu: Klicke auf das Teilen-Symbol und wähle 'Zum Home-Bildschirm' aus.");
+                    installBanner.classList.add("hidden");
+                }
+        }
 
         function abmelden() {
             localStorage.removeItem("Email")

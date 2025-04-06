@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Wochentag-Datum-Finder</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2rem;
+    }
+    label, select, input {
+      margin: 0.5rem 0;
+      display: block;
+    }
+    ul {
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Wochentag-Datum-Finder</h1>
+
+  <label for="weekday">Wähle einen Wochentag:</label>
+  <select id="weekday">
+    <option value="0">Sonntag</option>
+    <option value="1">Montag</option>
+    <option value="2">Dienstag</option>
+    <option value="3">Mittwoch</option>
+    <option value="4">Donnerstag</option>
+    <option value="5">Freitag</option>
+    <option value="6">Samstag</option>
+  </select>
+
+  <label for="start">Startdatum:</label>
+  <input type="date" id="start">
+
+  <label for="end">Enddatum:</label>
+  <input type="date" id="end">
+
+  <button onclick="findDates()">Zeige Daten</button>
+
+  <ul id="result"></ul>
+
+  <script>
+    function formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function findDates() {
+      const weekday = parseInt(document.getElementById('weekday').value);
+      const start = new Date(document.getElementById('start').value);
+      const end = new Date(document.getElementById('end').value);
+      const resultList = document.getElementById('result');
+
+      resultList.innerHTML = "";
+
+      if (isNaN(start) || isNaN(end) || start > end) {
+        alert("Bitte gültige Start- und Enddaten eingeben.");
+        return;
+      }
+
+      const current = new Date(start);
+
+      while (current <= end) {
+        if (current.getDay() === weekday) {
+          const listItem = document.createElement("li");
+          listItem.textContent = formatDate(current);
+          resultList.appendChild(listItem);
+        }
+        current.setDate(current.getDate() + 1);
+      }
+    }
+  </script>
+</body>
+</html>
